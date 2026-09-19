@@ -33,7 +33,7 @@ export default function Footer() {
   return (
     <footer className="border-t border-border px-5 py-8 sm:px-8">
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-5 text-sm text-muted sm:flex-row">
-        <Logo className="h-5 w-auto text-foreground" />
+        <Logo className="h-10 w-auto" />
 
         <p>&copy; {new Date().getFullYear()} Mona Fitness. All rights reserved.</p>
 

@@ -34,7 +34,7 @@ export default function Navbar() {
     >
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
         <a href="#top" className="flex items-center text-white">
-          <Logo className="h-6 w-auto sm:h-7" />
+          <Logo className="h-12 w-auto sm:h-14" />
         </a>
 
         <ul className="hidden items-center gap-8 rounded-full border border-white/10 bg-black/20 px-6 py-2.5 backdrop-blur-md md:flex">
