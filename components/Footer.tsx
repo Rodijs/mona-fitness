@@ -1,3 +1,5 @@
+import Logo from "./Logo";
+
 const SOCIALS = [
   {
     label: "X",
@@ -31,9 +33,7 @@ export default function Footer() {
   return (
     <footer className="border-t border-border px-5 py-8 sm:px-8">
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-5 text-sm text-muted sm:flex-row">
-        <span className="font-semibold text-foreground">
-          mona<span className="text-accent">.</span>fitness
-        </span>
+        <Logo className="h-5 w-auto text-foreground" />
 
         <p>&copy; {new Date().getFullYear()} Mona Fitness. All rights reserved.</p>
 

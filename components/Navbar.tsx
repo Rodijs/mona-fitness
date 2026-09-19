@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import Logo from "./Logo";
 
 const LINKS = [{ href: "#about", label: "About" }];
 
@@ -32,16 +33,8 @@ export default function Navbar() {
       }`}
     >
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
-        <a
-          href="#top"
-          className="flex items-center gap-2 rounded-full border border-white/15 bg-black/30 py-1.5 pl-3 pr-4 backdrop-blur-md sm:gap-3 sm:pl-3.5"
-        >
-          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-accent text-[11px] font-black text-background sm:h-7 sm:w-7">
-            M
-          </span>
-          <span className="text-sm font-extrabold tracking-tight text-white sm:text-base">
-            mona<span className="text-accent">.</span>fitness
-          </span>
+        <a href="#top" className="flex items-center text-white">
+          <Logo className="h-6 w-auto sm:h-7" />
         </a>
 
         <ul className="hidden items-center gap-8 rounded-full border border-white/10 bg-black/20 px-6 py-2.5 backdrop-blur-md md:flex">
