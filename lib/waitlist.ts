@@ -1,34 +1,37 @@
-import { Redis } from "@upstash/redis";
+import { createClient, type RedisClientType } from "redis";
 
 // Redis Set of subscriber emails — gives us both real duplicate-checking
 // and an accurate live count, unlike the old local-file approach which
 // didn't persist on Vercel's serverless filesystem.
 const SUBSCRIBERS_KEY = "mona:subscribers";
 
-let cachedRedis: Redis | null | undefined;
+// Cache the connected client across warm serverless invocations instead of
+// reconnecting on every request.
+let clientPromise: Promise<RedisClientType> | null = null;
 
-function getRedis(): Redis | null {
-  if (cachedRedis !== undefined) return cachedRedis;
+function getClient(): Promise<RedisClientType> | null {
+  const url = process.env.KV_REDIS_URL ?? process.env.REDIS_URL;
+  if (!url) return null;
 
-  // Vercel's Redis marketplace integrations have used a few different env
-  // var prefixes over time (KV_* for the legacy "Vercel KV" product,
-  // UPSTASH_REDIS_* for the newer Upstash marketplace listing). Try both.
-  const url = process.env.KV_REST_API_URL ?? process.env.UPSTASH_REDIS_REST_URL;
-  const token = process.env.KV_REST_API_TOKEN ?? process.env.UPSTASH_REDIS_REST_TOKEN;
+  if (!clientPromise) {
+    const client: RedisClientType = createClient({ url });
+    client.on("error", (err) => console.error("Redis client error:", err));
+    clientPromise = client.connect().then(() => client);
+  }
 
-  cachedRedis = url && token ? new Redis({ url, token }) : null;
-  return cachedRedis;
+  return clientPromise;
 }
 
 export async function addSubscriber(
   email: string
 ): Promise<{ ok: true; alreadySubscribed: boolean; count: number } | { ok: false }> {
-  const redis = getRedis();
-  if (!redis) return { ok: false };
+  const pending = getClient();
+  if (!pending) return { ok: false };
 
   try {
-    const added = await redis.sadd(SUBSCRIBERS_KEY, email);
-    const count = await redis.scard(SUBSCRIBERS_KEY);
+    const client = await pending;
+    const added = await client.sAdd(SUBSCRIBERS_KEY, email);
+    const count = await client.sCard(SUBSCRIBERS_KEY);
     return { ok: true, alreadySubscribed: added === 0, count };
   } catch (err) {
     console.error("Redis addSubscriber failed:", err);
@@ -37,11 +40,12 @@ export async function addSubscriber(
 }
 
 export async function getSubscriberCount(): Promise<number | null> {
-  const redis = getRedis();
-  if (!redis) return null;
+  const pending = getClient();
+  if (!pending) return null;
 
   try {
-    return await redis.scard(SUBSCRIBERS_KEY);
+    const client = await pending;
+    return await client.sCard(SUBSCRIBERS_KEY);
   } catch (err) {
     console.error("Redis getSubscriberCount failed:", err);
     return null;
