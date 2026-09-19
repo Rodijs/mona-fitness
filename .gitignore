@@ -42,3 +42,6 @@ next-env.d.ts
 
 # local email signups (dev-only store until a real provider is wired up)
 /data/subscribers.json
+
+# Claude Code harness-internal state, not project files
+/.claude/
