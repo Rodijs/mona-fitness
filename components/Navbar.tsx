@@ -4,8 +4,6 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Logo from "./Logo";
 
-const LINKS = [{ href: "#about", label: "About" }];
-
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -37,27 +35,12 @@ export default function Navbar() {
           <Logo className="h-12 w-auto sm:h-14" />
         </a>
 
-        <ul className="hidden items-center gap-8 rounded-full border border-white/10 bg-black/20 px-6 py-2.5 backdrop-blur-md md:flex">
-          {LINKS.map((link) => (
-            <li key={link.href}>
-              <a
-                href={link.href}
-                className="text-sm font-medium text-white/70 transition-colors hover:text-white"
-              >
-                {link.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-
-        <div className="hidden items-center gap-2 md:flex">
-          <a
-            href="#features"
-            className="rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-background transition-transform hover:scale-105"
-          >
-            See Features
-          </a>
-        </div>
+        <a
+          href="#features"
+          className="hidden text-sm font-medium text-white/80 transition-colors hover:text-white md:block"
+        >
+          Read More
+        </a>
 
         <button
           type="button"
@@ -91,34 +74,17 @@ export default function Navbar() {
             className="fixed inset-0 top-[65px] z-40 bg-background/95 backdrop-blur-md md:hidden"
           >
             <ul className="flex flex-col gap-2 px-6 py-8">
-              {LINKS.map((link, i) => (
-                <motion.li
-                  key={link.href}
-                  initial={{ opacity: 0, x: -12 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.05 * i, duration: 0.25 }}
-                >
-                  <a
-                    href={link.href}
-                    onClick={() => setMenuOpen(false)}
-                    className="block py-3 text-2xl font-semibold"
-                  >
-                    {link.label}
-                  </a>
-                </motion.li>
-              ))}
               <motion.li
                 initial={{ opacity: 0, x: -12 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.05 * LINKS.length, duration: 0.25 }}
-                className="pt-4"
+                transition={{ delay: 0.05, duration: 0.25 }}
               >
                 <a
                   href="#features"
                   onClick={() => setMenuOpen(false)}
-                  className="inline-block rounded-full bg-accent px-6 py-3 text-base font-semibold text-background"
+                  className="block py-3 text-2xl font-semibold"
                 >
-                  See Features
+                  Read More
                 </a>
               </motion.li>
             </ul>
