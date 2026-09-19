@@ -39,6 +39,20 @@ export async function addSubscriber(
   }
 }
 
+export async function removeSubscriber(email: string): Promise<boolean> {
+  const pending = getClient();
+  if (!pending) return false;
+
+  try {
+    const client = await pending;
+    const removed = await client.sRem(SUBSCRIBERS_KEY, email);
+    return removed > 0;
+  } catch (err) {
+    console.error("Redis removeSubscriber failed:", err);
+    return false;
+  }
+}
+
 export async function getSubscriberCount(): Promise<number | null> {
   const pending = getClient();
   if (!pending) return null;
