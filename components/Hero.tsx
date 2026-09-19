@@ -7,10 +7,10 @@ import EmailForm from "./EmailForm";
 
 function badgeText(count: number | null) {
   if (!count || count <= 0) {
-    return "Now building the waitlist for early access.";
+    return "Now we are building the waitlist for early access.";
   }
   const noun = count === 1 ? "member" : "members";
-  return `Now building the waitlist for early access — join ${count} ${noun} already on the list.`;
+  return `Now we are building the waitlist for early access — join ${count} ${noun} already on the list.`;
 }
 
 const container: Variants = {
