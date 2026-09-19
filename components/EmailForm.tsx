@@ -10,9 +10,11 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 type Props = {
   /** "glass" renders a frosted, translucent style for use over a photo background. */
   variant?: "solid" | "glass";
+  /** Called with the latest waitlist count after a successful new signup. */
+  onSubscribed?: (count: number | null) => void;
 };
 
-export default function EmailForm({ variant = "solid" }: Props) {
+export default function EmailForm({ variant = "solid", onSubscribed }: Props) {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState<string | null>(null);
@@ -51,6 +53,10 @@ export default function EmailForm({ variant = "solid" }: Props) {
           : "You're on the list! We'll be in touch."
       );
       setEmail("");
+
+      if (!data?.alreadySubscribed) {
+        onSubscribed?.(typeof data?.count === "number" ? data.count : null);
+      }
     } catch {
       setStatus("error");
       setMessage("Something went wrong. Check your connection and try again.");
@@ -93,7 +99,7 @@ export default function EmailForm({ variant = "solid" }: Props) {
           type="email"
           inputMode="email"
           autoComplete="email"
-          placeholder="you@example.com"
+          placeholder="Your@email.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           className={`w-full flex-1 rounded-full border px-5 py-4 text-sm outline-none transition-colors focus:border-accent sm:text-base ${

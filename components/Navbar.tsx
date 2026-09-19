@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Logo from "./Logo";
+import AnimatedCTA from "./AnimatedCTA";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -35,12 +36,9 @@ export default function Navbar() {
           <Logo className="h-12 w-auto sm:h-14" />
         </a>
 
-        <a
-          href="#features"
-          className="hidden text-sm font-medium text-white/80 transition-colors hover:text-white md:block"
-        >
+        <AnimatedCTA href="#features" className="hidden md:inline-flex">
           Read More
-        </a>
+        </AnimatedCTA>
 
         <button
           type="button"
@@ -78,14 +76,11 @@ export default function Navbar() {
                 initial={{ opacity: 0, x: -12 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.05, duration: 0.25 }}
+                className="pt-2"
               >
-                <a
-                  href="#features"
-                  onClick={() => setMenuOpen(false)}
-                  className="block py-3 text-2xl font-semibold"
-                >
+                <AnimatedCTA href="#features" onClick={() => setMenuOpen(false)}>
                   Read More
-                </a>
+                </AnimatedCTA>
               </motion.li>
             </ul>
           </motion.div>

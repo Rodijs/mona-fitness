@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
 import { Resend } from "resend";
+import { addSubscriber } from "@/lib/waitlist";
 
 // Route Handler is not cached — every POST runs fresh, which is what we
 // want for a mutation like this.
@@ -18,13 +19,12 @@ type Subscriber = {
   subscribedAt: string;
 };
 
-async function readSubscribers(): Promise<Subscriber[]> {
+async function readLocalSubscribers(): Promise<Subscriber[]> {
   try {
     const raw = await fs.readFile(DATA_FILE, "utf-8");
     return JSON.parse(raw) as Subscriber[];
   } catch {
     // No file yet, or (in production, e.g. Vercel) a read-only filesystem.
-    // Either way, treat it as "no local record" and fall through.
     return [];
   }
 }
@@ -35,8 +35,8 @@ async function persistSubscriberLocally(subscribers: Subscriber[], email: string
     await fs.mkdir(DATA_DIR, { recursive: true });
     await fs.writeFile(DATA_FILE, JSON.stringify(subscribers, null, 2), "utf-8");
   } catch {
-    // Read-only filesystem in production — that's expected there. The
-    // notification email below is the real source of truth in that case.
+    // Read-only filesystem in production — expected there, Redis is the
+    // real source of truth in that case (see addSubscriber).
   }
 }
 
@@ -79,13 +79,30 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Enter a valid email address." }, { status: 400 });
   }
 
-  const subscribers = await readSubscribers();
-  const alreadySubscribed = subscribers.some((s) => s.email === email);
+  // Redis is the real source of truth (persists in production). Local file
+  // storage is a best-effort fallback for local dev when Redis isn't set up.
+  const redisResult = await addSubscriber(email);
+
+  let alreadySubscribed: boolean;
+  let count: number | null;
+
+  if (redisResult.ok) {
+    alreadySubscribed = redisResult.alreadySubscribed;
+    count = redisResult.count;
+  } else {
+    const subscribers = await readLocalSubscribers();
+    alreadySubscribed = subscribers.some((s) => s.email === email);
+    if (!alreadySubscribed) {
+      // Mutates `subscribers` in place (pushes the new entry), so its
+      // length already reflects the new total afterward.
+      await persistSubscriberLocally(subscribers, email);
+    }
+    count = subscribers.length;
+  }
 
   if (!alreadySubscribed) {
-    await persistSubscriberLocally(subscribers, email);
     await sendNotificationEmail(email);
   }
 
-  return NextResponse.json({ ok: true, alreadySubscribed });
+  return NextResponse.json({ ok: true, alreadySubscribed, count });
 }
