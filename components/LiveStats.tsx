@@ -1,6 +1,6 @@
 "use client";
 
-// "Our live stats" — real, anonymous community numbers from the MONA app
+// "Our Live Stats" — real, anonymous community numbers from the MONA app
 // (see lib/liveStats.ts), refreshed every minute while the section is on
 // screen. If the numbers can't be loaded the section hides itself rather
 // than showing zeros.
@@ -201,7 +201,7 @@ const Icon = {
   ),
   flame: (
     <svg viewBox="0 0 24 24" fill="none" className="h-[18px] w-[18px]">
-      <path d="M12 3s4 3.5 4 8a4 4 0 1 1-8 0c0-1.2.6-2 1.2-2.8.3 1 1.1 1.3 1.5.8C11.2 8 10 6.8 10 5c1 .5 1.6 0 2-2Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+      <path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   ),
   trophy: (
@@ -409,8 +409,68 @@ function rigaWeekdays(generatedAt: string): string[] {
   });
 }
 
-function StreakWidget({ s, on }: { s: Stats; on: boolean }) {
+// The MONA app's "Move streak" flame (Home screen): a lime gradient tile with
+// a filled dark flame (lucide "flame"), here with a pop-in, breathing,
+// a soft glow pulse and embers drifting up.
+const APP_FLAME_PATH =
+  "M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4";
+const APP_GRADIENT = "linear-gradient(135deg, #C8FF8F 0%, #A6F05A 100%)";
+
+function AppFlame({ on, lit }: { on: boolean; lit: boolean }) {
   const reduce = useReducedMotion();
+  const play = on && lit && !reduce;
+  return (
+    <div className="relative h-16 w-16 shrink-0" aria-hidden>
+      {/* Glow that breathes with the flame */}
+      <motion.div
+        className="absolute inset-0 rounded-[20px] blur-xl"
+        style={{ background: APP_GRADIENT }}
+        initial={{ opacity: 0 }}
+        animate={play ? { opacity: [0.35, 0.7, 0.35], scale: [0.9, 1.08, 0.9] } : { opacity: lit ? 0.35 : 0 }}
+        transition={{ duration: 2.4, repeat: play ? Infinity : 0, ease: "easeInOut" }}
+      />
+      {/* Embers rising from the tile */}
+      {play &&
+        [22, 50, 78, 36, 64].map((x, i) => (
+          <motion.span
+            key={x}
+            className="absolute bottom-[55%] h-1.5 w-1.5 rounded-full"
+            style={{ left: `${x}%`, background: i % 2 ? "#eaffb8" : ACCENT }}
+            initial={{ opacity: 0, y: 0 }}
+            animate={{ opacity: [0, 1, 0], y: -38 - i * 5, x: (i % 2 ? 1 : -1) * (4 + i) }}
+            transition={{ duration: 2.2 + i * 0.25, delay: 0.9 + i * 0.4, repeat: Infinity, repeatDelay: 0.8, ease: "easeOut" }}
+          />
+        ))}
+      {/* The tile: pops in with a little twist, like in the app */}
+      <motion.div
+        className="relative flex h-16 w-16 items-center justify-center rounded-[20px]"
+        style={{ background: lit ? APP_GRADIENT : "rgba(255,255,255,0.1)" }}
+        initial={reduce ? false : { rotate: -14, scale: 0.5, opacity: 0 }}
+        animate={on ? { rotate: 0, scale: 1, opacity: 1 } : {}}
+        transition={{ type: "spring", stiffness: 260, damping: 14, delay: 0.25 }}
+      >
+        <motion.svg
+          viewBox="0 0 24 24"
+          className="h-[30px] w-[30px]"
+          style={{ originY: 0.85 }}
+          animate={play ? { scale: [1, 1.1, 1], rotate: [0, -4, 3, 0] } : undefined}
+          transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut", delay: 0.9 }}
+        >
+          <path
+            d={APP_FLAME_PATH}
+            fill={lit ? "#0B110A" : "rgba(255,255,255,0.35)"}
+            stroke={lit ? "#0B110A" : "rgba(255,255,255,0.35)"}
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </motion.svg>
+      </motion.div>
+    </div>
+  );
+}
+
+function StreakWidget({ s, on }: { s: Stats; on: boolean }) {
   const live = s.streakBestNow > 0;
   const days = rigaWeekdays(s.generatedAt);
   return (
@@ -427,24 +487,7 @@ function StreakWidget({ s, on }: { s: Stats; on: boolean }) {
               : "Days in a row with a workout"}
           </p>
         </div>
-        {/* Flickering flame */}
-        <motion.svg
-          viewBox="0 0 48 60"
-          className="h-16 w-14 shrink-0 overflow-visible"
-          aria-hidden
-          style={{ originY: 1, filter: "drop-shadow(0 0 12px rgba(200,255,61,0.5))" }}
-          animate={reduce || !on ? undefined : { scaleY: [1, 1.08, 0.96, 1.05, 1], scaleX: [1, 0.96, 1.03, 0.98, 1], rotate: [0, -2, 1.5, -1, 0] }}
-          transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <defs>
-            <linearGradient id="flameOuter" x1="0" y1="1" x2="0" y2="0">
-              <stop offset="0%" stopColor="#8fe34f" />
-              <stop offset="100%" stopColor={ACCENT} />
-            </linearGradient>
-          </defs>
-          <path d="M24 2c4 9 16 15 16 32a16 16 0 1 1-32 0c0-7 4-11 7-15 1 5 4 7 6 6-2-8 0-16 3-23Z" fill="url(#flameOuter)" />
-          <path d="M24 30c2.5 4 8 6.5 8 13a8 8 0 1 1-16 0c0-3 1.5-5 3.5-7 .5 2 2 3 3 2.5-1-3.5 0-6.5 1.5-8.5Z" fill="#f7ffe0" />
-        </motion.svg>
+        <AppFlame on={on} lit={live} />
       </div>
       <div className="mt-auto pt-6">
         <div className="grid grid-cols-7 gap-1.5">
@@ -490,7 +533,12 @@ function ChallengesWidget({ s, on }: { s: Stats; on: boolean }) {
           </p>
         </div>
         <div className="relative h-24 w-24 shrink-0">
-          <svg viewBox="0 0 80 80" className="h-full w-full -rotate-90" aria-hidden>
+          <svg
+            viewBox="0 0 80 80"
+            className="h-full w-full -rotate-90 overflow-visible"
+            style={{ filter: "drop-shadow(0 0 6px rgba(200,255,61,0.45))" }}
+            aria-hidden
+          >
             <circle cx="40" cy="40" r={r} fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="7" />
             <motion.circle
               cx="40"
@@ -504,7 +552,6 @@ function ChallengesWidget({ s, on }: { s: Stats; on: boolean }) {
               initial={{ strokeDashoffset: c }}
               animate={on ? { strokeDashoffset: c * (1 - share) } : {}}
               transition={{ duration: 1.6, ease: EASE, delay: 0.4 }}
-              style={{ filter: "drop-shadow(0 0 6px rgba(200,255,61,0.5))" }}
             />
           </svg>
           <motion.div
@@ -529,6 +576,55 @@ function ChallengesWidget({ s, on }: { s: Stats; on: boolean }) {
 }
 
 // ------------------------------------------------------------------ section
+
+/** Green "Ready to Join?" button: glides up to the waitlist form in the hero
+ *  and puts the cursor in the email field. */
+function JoinCTA() {
+  const reduce = useReducedMotion();
+  const go = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const target = document.getElementById("join");
+    if (!target) return; // plain #join link still works
+    e.preventDefault();
+    target.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
+    const email = document.getElementById("email") as HTMLInputElement | null;
+    window.setTimeout(() => email?.focus({ preventScroll: true }), reduce ? 0 : 750);
+    history.replaceState(null, "", "#join");
+  };
+  return (
+    <motion.div
+      className="mt-12 flex justify-center"
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.6, ease: EASE }}
+    >
+      <motion.a
+        href="#join"
+        onClick={go}
+        whileHover={reduce ? undefined : { y: -3, scale: 1.03 }}
+        whileTap={{ scale: 0.97 }}
+        className="group relative inline-flex items-center gap-3 overflow-hidden rounded-full bg-accent px-8 py-4 text-base font-extrabold tracking-tight text-black shadow-[0_14px_40px_-12px_rgba(200,255,61,0.75)] outline-none ring-accent/40 focus-visible:ring-4"
+      >
+        {/* Shine sweeping across every few seconds */}
+        {!reduce && (
+          <motion.span
+            aria-hidden
+            className="pointer-events-none absolute inset-y-0 w-1/3 -skew-x-12 bg-gradient-to-r from-transparent via-white/70 to-transparent"
+            initial={{ x: "-150%" }}
+            animate={{ x: "400%" }}
+            transition={{ duration: 1.2, ease: "easeInOut", repeat: Infinity, repeatDelay: 3.2 }}
+          />
+        )}
+        <span className="relative">Ready to Join?</span>
+        <span className="relative flex h-8 w-8 items-center justify-center rounded-full bg-black text-accent transition-transform duration-300 group-hover:-translate-y-0.5">
+          <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" aria-hidden>
+            <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </span>
+      </motion.a>
+    </motion.div>
+  );
+}
 
 function ago(ms: number) {
   const s = Math.max(0, Math.round(ms / 1000));
@@ -567,7 +663,7 @@ export default function LiveStats() {
             Live {fetchedAt ? `· updated ${ago(now - fetchedAt)}` : ""}
           </span>
           <h2 id="live-stats-title" className="mt-5 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
-            Our <span className="font-serif font-medium italic text-gradient">live stats</span>
+            Our <span className="font-serif font-medium italic text-gradient">Live Stats</span>
           </h2>
           <p className="mt-3 text-white/70">
             Real numbers from the MONA app, straight from our first members — updated every minute.
@@ -596,6 +692,7 @@ export default function LiveStats() {
         <p className="mt-6 text-center text-xs text-white/40">
           Community totals only — no names or personal data. Days follow Riga time.
         </p>
+        <JoinCTA />
       </div>
     </section>
   );
