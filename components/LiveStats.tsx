@@ -409,164 +409,111 @@ function rigaWeekdays(generatedAt: string): string[] {
   });
 }
 
-// Same look as the streak card on the app's challenge screen (StreakCard in
-// the app): ember glow, light beams, drifting embers, a breathing orange
-// flame, a big glowing number and the last days as a strip of checks.
-const FIRE = "#FF7A2F";
-const FIRE_HOT = "#FFB347";
+// The flame from the app's streak card (filled flame, glow, breathing,
+// embers drifting up) in MONA lime.
 const FLAME_PATH =
   "M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4";
-const STREAK_MILESTONES = [3, 7, 14, 21, 30, 50, 75, 100, 150, 200, 365];
+const LIME_HOT = "#eaffb8";
 
-function StreakWidget({ s, on }: { s: Stats; on: boolean }) {
+function AppFlame({ on, lit }: { on: boolean; lit: boolean }) {
   const reduce = useReducedMotion();
-  const live = s.streakBestNow > 0;
-  const value = live ? s.streakBestNow : s.streakRecord;
-  const lit = value > 0;
   const play = on && lit && !reduce;
-  const days = rigaWeekdays(s.generatedAt);
-  const milestone = STREAK_MILESTONES.find((m) => m > value) ?? null;
   return (
-    <motion.div
-      custom={2}
-      variants={cardIn}
-      whileHover={{ y: -4 }}
-      transition={{ type: "spring", stiffness: 300, damping: 24 }}
-      className="relative flex flex-col items-center overflow-hidden rounded-2xl border border-white/10 px-5 pb-5 pt-5 text-center text-white lg:col-span-2"
-      style={{
-        backgroundColor: "#0D0907",
-        backgroundImage: [
-          "radial-gradient(60% 45% at 50% 40%, rgba(255,122,47,0.45) 0%, rgba(255,90,30,0.14) 45%, transparent 75%)",
-          "radial-gradient(120% 60% at 50% 120%, rgba(255,110,40,0.35) 0%, transparent 70%)",
-        ].join(", "),
-      }}
-    >
-      {/* Light beams fanning out from the number */}
+    <div className="relative flex h-16 w-16 shrink-0 items-center justify-center" aria-hidden>
+      {/* Soft glow behind the flame */}
       <motion.div
-        aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{
-          backgroundImage: [
-            "conic-gradient(from 230deg at 50% 42%, transparent 0deg, rgba(255,255,255,0.07) 18deg, transparent 40deg)",
-            "conic-gradient(from 90deg at 50% 42%, transparent 0deg, rgba(255,255,255,0.07) 22deg, transparent 40deg)",
-          ].join(", "),
-        }}
-        initial={reduce ? false : { opacity: 0, scale: 0.85 }}
-        animate={on ? { opacity: lit ? 1 : 0.4, scale: 1 } : {}}
-        transition={{ duration: 1.2, delay: 0.2, ease: EASE }}
+        className="absolute inset-1 rounded-full blur-xl"
+        style={{ background: "radial-gradient(circle, rgba(200,255,61,0.55), transparent 70%)" }}
+        initial={{ opacity: 0 }}
+        animate={play ? { opacity: [0.5, 0.95, 0.5], scale: [0.9, 1.1, 0.9] } : { opacity: lit ? 0.5 : 0 }}
+        transition={{ duration: 2.4, repeat: play ? Infinity : 0, ease: "easeInOut" }}
       />
       {/* Embers drifting up */}
       {play &&
-        [16, 32, 68, 84, 50, 24, 76].map((x, i) => (
+        [20, 48, 76, 34, 62].map((x, i) => (
           <motion.span
             key={x}
-            aria-hidden
-            className="pointer-events-none absolute h-1.5 w-1.5 rounded-full"
-            style={{ left: `${x}%`, bottom: "36%", backgroundColor: i % 2 ? FIRE_HOT : FIRE }}
+            className="absolute bottom-[45%] h-1.5 w-1.5 rounded-full"
+            style={{ left: `${x}%`, background: i % 2 ? LIME_HOT : ACCENT }}
             initial={{ opacity: 0, y: 0 }}
-            animate={{ opacity: [0, 0.9, 0], y: -70 - i * 7 }}
-            transition={{ duration: 2.6 + i * 0.3, delay: 0.8 + i * 0.4, repeat: Infinity, repeatDelay: 1.1, ease: "easeOut" }}
+            animate={{ opacity: [0, 0.95, 0], y: -40 - i * 6, x: (i % 2 ? 1 : -1) * (3 + i) }}
+            transition={{ duration: 2.4 + i * 0.3, delay: 0.8 + i * 0.45, repeat: Infinity, repeatDelay: 1, ease: "easeOut" }}
           />
         ))}
-
-      <p className="relative w-full text-left text-[11px] uppercase tracking-[0.2em] text-white/45">
-        {live ? "Longest live streak" : "Streak record"}
-      </p>
-
       {/* Flame: pops in, then breathes */}
       <motion.div
-        className="relative mt-3"
         initial={reduce ? false : { scale: 0.4, opacity: 0, y: 6 }}
         animate={on ? { scale: 1, opacity: 1, y: 0 } : {}}
-        transition={{ type: "spring", stiffness: 260, damping: 15, delay: 0.15 }}
+        transition={{ type: "spring", stiffness: 260, damping: 15, delay: 0.2 }}
       >
         <motion.svg
           viewBox="0 0 24 24"
-          className="h-11 w-11 overflow-visible"
-          aria-hidden
+          className="relative h-11 w-11 overflow-visible"
           animate={play ? { scale: [1, 1.1, 1], rotate: [0, -3, 2, 0] } : undefined}
           transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
           style={{
-            filter: lit ? `drop-shadow(0 0 10px ${FIRE}) drop-shadow(0 0 22px rgba(255,122,47,0.5))` : "none",
+            filter: lit
+              ? `drop-shadow(0 0 10px ${ACCENT}) drop-shadow(0 0 22px rgba(200,255,61,0.45))`
+              : "none",
           }}
         >
           <path
             d={FLAME_PATH}
-            fill={lit ? FIRE : "none"}
-            stroke={lit ? FIRE_HOT : "rgba(255,255,255,0.3)"}
+            fill={lit ? ACCENT : "none"}
+            stroke={lit ? LIME_HOT : "rgba(255,255,255,0.3)"}
             strokeWidth="1.75"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
         </motion.svg>
       </motion.div>
+    </div>
+  );
+}
 
-      {/* The number */}
-      <motion.p
-        className="relative mt-1 text-[84px] font-extrabold leading-none tracking-tight tabular-nums"
-        style={{ textShadow: lit ? "0 0 28px rgba(255,140,60,0.55), 0 2px 0 rgba(0,0,0,0.3)" : undefined }}
-        initial={reduce ? false : { opacity: 0, scale: 0.7, filter: "blur(8px)" }}
-        animate={on ? { opacity: 1, scale: 1, filter: "blur(0px)" } : {}}
-        transition={{ duration: 0.7, delay: 0.25, ease: EASE }}
-      >
-        <CountUp value={value} start={on} />
-      </motion.p>
-      <p className="relative mt-1 text-lg font-semibold" style={{ color: lit ? FIRE_HOT : "rgba(255,255,255,0.6)" }}>
-        {value === 0 ? "No streak yet" : value === 1 ? "Day streak" : "Days streak"}
-      </p>
-      <p className="relative mt-0.5 text-sm text-white/50">
-        {!lit
-          ? "Days in a row with a workout"
-          : milestone
-            ? `${milestone - value} more to ${milestone} days`
-            : "Legendary streak!"}
-      </p>
-
-      {/* Last 7 days: a check where the community moved */}
-      <div className="relative mt-auto w-full pt-6">
-        <div className="flex justify-between rounded-full bg-white/[0.06] px-1.5 py-1.5">
-          {s.activeDays.map((n, i) => {
-            const today = i === s.activeDays.length - 1;
-            const done = n > 0;
-            const ring = today ? "inset 0 0 0 2px rgba(255,255,255,0.55)" : undefined;
-            return (
-              <div key={i} className="flex flex-col items-center gap-1">
-                <span className={`text-[10px] uppercase ${today ? "font-semibold text-white/85" : "text-white/40"}`}>
-                  {days[i]}
-                </span>
-                <motion.span
-                  className="flex h-8 w-8 items-center justify-center rounded-full"
-                  title={`${n} ${n === 1 ? "person" : "people"} moved`}
-                  style={
-                    done
-                      ? {
-                          backgroundImage: `linear-gradient(160deg, ${FIRE_HOT}, ${FIRE})`,
-                          color: "#1A0E06",
-                          boxShadow: `0 0 10px rgba(255,122,47,0.55)${ring ? `, ${ring}` : ""}`,
-                        }
-                      : { backgroundColor: "rgba(255,255,255,0.07)", boxShadow: ring }
-                  }
-                  initial={reduce ? false : { scale: 0, opacity: 0 }}
-                  animate={on ? { scale: 1, opacity: 1 } : {}}
-                  transition={{ type: "spring", stiffness: 380, damping: 20, delay: 0.5 + i * 0.08 }}
-                >
-                  {done && (
-                    <svg viewBox="0 0 24 24" fill="none" className="h-3.5 w-3.5" aria-hidden>
-                      <path d="M20 6 9 17l-5-5" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  )}
-                </motion.span>
-              </div>
-            );
-          })}
+function StreakWidget({ s, on }: { s: Stats; on: boolean }) {
+  const live = s.streakBestNow > 0;
+  const days = rigaWeekdays(s.generatedAt);
+  return (
+    <Widget index={2} label={live ? "Longest live streak" : "Streak record"} icon={Icon.flame} className="lg:col-span-2">
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <Big>
+            <CountUp value={live ? s.streakBestNow : s.streakRecord} start={on} />
+            <Unit>{(live ? s.streakBestNow : s.streakRecord) === 1 ? "day" : "days"}</Unit>
+          </Big>
+          <p className="mt-2 text-sm text-white/60">
+            {live
+              ? `${fmt(s.streakPeople)} ${s.streakPeople === 1 ? "person" : "people"} on a streak now`
+              : "Days in a row with a workout"}
+          </p>
         </div>
-        <p className="mt-3 text-xs text-white/45">
-          {live
-            ? `${fmt(s.streakPeople)} ${s.streakPeople === 1 ? "person" : "people"} on a streak now · record ${fmt(s.streakRecord)} days`
-            : `Record ${fmt(s.streakRecord)} days`}
-        </p>
+        <AppFlame on={on} lit={live} />
       </div>
-    </motion.div>
+      <div className="mt-auto pt-6">
+        <div className="grid grid-cols-7 gap-1.5">
+          {s.activeDays.map((n, i) => (
+            <div key={i} className="flex flex-col items-center gap-1.5">
+              <motion.div
+                className="flex aspect-square w-full items-center justify-center rounded-lg"
+                initial={{ opacity: 0, scale: 0.6 }}
+                animate={on ? { opacity: 1, scale: 1 } : {}}
+                transition={{ delay: 0.4 + i * 0.09, type: "spring", stiffness: 380, damping: 20 }}
+                style={{
+                  background: n > 0 ? ACCENT : "rgba(255,255,255,0.08)",
+                  boxShadow: n > 0 && i === 6 ? "0 0 18px -2px rgba(200,255,61,0.7)" : undefined,
+                }}
+                title={`${n} ${n === 1 ? "person" : "people"} moved`}
+              >
+                {n > 0 && <span className="text-[10px] font-extrabold text-black">{n}</span>}
+              </motion.div>
+              <span className={`text-[10px] ${i === 6 ? "font-bold text-white" : "text-white/40"}`}>{days[i]}</span>
+            </div>
+          ))}
+        </div>
+        <p className="mt-3 text-xs text-white/45">People moving each day · record {fmt(s.streakRecord)} days</p>
+      </div>
+    </Widget>
   );
 }
 
