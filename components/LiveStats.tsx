@@ -193,10 +193,16 @@ const Icon = {
       <path d="M4 12h16M6.5 8v8M17.5 8v8M3 10v4M21 10v4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
     </svg>
   ),
+  // Same runner as the MONA app's "Your progress" running widget
+  // (RunIcon in move-nation-ai src/components/ExerciseIcons.tsx).
   run: (
-    <svg viewBox="0 0 24 24" fill="none" className="h-[18px] w-[18px]">
-      <circle cx="15" cy="4.5" r="1.8" stroke="currentColor" strokeWidth="1.6" />
-      <path d="m8 21 3-6 3 2 1 4M6 11l3-3 4 1 2 3 3 1M11 15l2-6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" className="h-[18px] w-[18px]">
+      <circle cx="14.5" cy="3.5" r="2" />
+      <path d="M13.5 6 L11 12.5" />
+      <path d="M12.5 8 L16.5 10" />
+      <path d="M12.5 8 L8.5 9.5" />
+      <path d="M11 12.5 L15.5 15 L14 20" />
+      <path d="M11 12.5 L8.5 17 L4 17.5" />
     </svg>
   ),
   flame: (
@@ -660,7 +666,7 @@ export default function LiveStats() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.5 }}
-          className="mx-auto mb-12 max-w-xl text-center"
+          className="mx-auto mb-12 max-w-3xl text-center"
         >
           <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-xs font-semibold text-white/80 backdrop-blur-md">
             <span className="relative flex h-2 w-2">
@@ -672,7 +678,7 @@ export default function LiveStats() {
           <h2 id="live-stats-title" className="mt-5 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
             Our <span className="font-serif font-medium italic text-gradient">Live Stats</span>
           </h2>
-          <p className="mt-3 text-white/70">
+          <p className="mx-auto mt-3 max-w-xl text-white/70 md:max-w-none md:whitespace-nowrap md:text-[15px] lg:text-base">
             Real numbers from the MONA app, straight from our first members — updated every minute.
           </p>
         </motion.div>
