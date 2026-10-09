@@ -529,7 +529,7 @@ function ChallengesWidget({ s, on }: { s: Stats; on: boolean }) {
   const share = s.challengesTotal > 0 ? s.challengesActive / s.challengesTotal : 0;
   return (
     <Widget index={4} label="Challenges created" icon={Icon.trophy} className="lg:col-span-2">
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex items-start justify-between gap-4">
         <div>
           <Big>
             <CountUp value={s.challengesTotal} start={on} />
