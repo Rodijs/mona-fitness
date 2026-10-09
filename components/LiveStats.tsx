@@ -533,6 +533,7 @@ function ChallengesWidget({ s, on }: { s: Stats; on: boolean }) {
         <div>
           <Big>
             <CountUp value={s.challengesTotal} start={on} />
+            <Unit>total</Unit>
           </Big>
           <p className="mt-2 text-sm text-white/60">
             <span className="font-semibold text-accent">+{fmt(s.challengesWeek)}</span> new this week
