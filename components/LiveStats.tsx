@@ -410,10 +410,11 @@ function rigaWeekdays(generatedAt: string): string[] {
 }
 
 // The flame from the app's streak card (filled flame, glow, breathing,
-// embers drifting up) in MONA lime.
+// embers drifting up), in the app's fire colours.
 const FLAME_PATH =
   "M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4";
-const LIME_HOT = "#eaffb8";
+const FIRE = "#FF7A2F";
+const FIRE_HOT = "#FFB347";
 
 function AppFlame({ on, lit }: { on: boolean; lit: boolean }) {
   const reduce = useReducedMotion();
@@ -423,7 +424,7 @@ function AppFlame({ on, lit }: { on: boolean; lit: boolean }) {
       {/* Soft glow behind the flame */}
       <motion.div
         className="absolute inset-1 rounded-full blur-xl"
-        style={{ background: "radial-gradient(circle, rgba(200,255,61,0.55), transparent 70%)" }}
+        style={{ background: "radial-gradient(circle, rgba(255,122,47,0.55), transparent 70%)" }}
         initial={{ opacity: 0 }}
         animate={play ? { opacity: [0.5, 0.95, 0.5], scale: [0.9, 1.1, 0.9] } : { opacity: lit ? 0.5 : 0 }}
         transition={{ duration: 2.4, repeat: play ? Infinity : 0, ease: "easeInOut" }}
@@ -434,7 +435,7 @@ function AppFlame({ on, lit }: { on: boolean; lit: boolean }) {
           <motion.span
             key={x}
             className="absolute bottom-[45%] h-1.5 w-1.5 rounded-full"
-            style={{ left: `${x}%`, background: i % 2 ? LIME_HOT : ACCENT }}
+            style={{ left: `${x}%`, background: i % 2 ? FIRE_HOT : FIRE }}
             initial={{ opacity: 0, y: 0 }}
             animate={{ opacity: [0, 0.95, 0], y: -40 - i * 6, x: (i % 2 ? 1 : -1) * (3 + i) }}
             transition={{ duration: 2.4 + i * 0.3, delay: 0.8 + i * 0.45, repeat: Infinity, repeatDelay: 1, ease: "easeOut" }}
@@ -453,14 +454,14 @@ function AppFlame({ on, lit }: { on: boolean; lit: boolean }) {
           transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
           style={{
             filter: lit
-              ? `drop-shadow(0 0 10px ${ACCENT}) drop-shadow(0 0 22px rgba(200,255,61,0.45))`
+              ? `drop-shadow(0 0 10px ${FIRE}) drop-shadow(0 0 22px rgba(255,122,47,0.5))`
               : "none",
           }}
         >
           <path
             d={FLAME_PATH}
-            fill={lit ? ACCENT : "none"}
-            stroke={lit ? LIME_HOT : "rgba(255,255,255,0.3)"}
+            fill={lit ? FIRE : "none"}
+            stroke={lit ? FIRE_HOT : "rgba(255,255,255,0.3)"}
             strokeWidth="1.75"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -495,7 +496,7 @@ function StreakWidget({ s, on }: { s: Stats; on: boolean }) {
           {s.activeDays.map((n, i) => (
             <div key={i} className="flex flex-col items-center gap-1.5">
               <motion.div
-                className="flex aspect-square w-full items-center justify-center rounded-lg"
+                className="flex aspect-square w-full max-w-10 items-center justify-center rounded-full"
                 initial={{ opacity: 0, scale: 0.6 }}
                 animate={on ? { opacity: 1, scale: 1 } : {}}
                 transition={{ delay: 0.4 + i * 0.09, type: "spring", stiffness: 380, damping: 20 }}
@@ -505,7 +506,11 @@ function StreakWidget({ s, on }: { s: Stats; on: boolean }) {
                 }}
                 title={`${n} ${n === 1 ? "person" : "people"} moved`}
               >
-                {n > 0 && <span className="text-[10px] font-extrabold text-black">{n}</span>}
+                {n > 0 && (
+                  <svg viewBox="0 0 24 24" fill="none" className="h-1/2 w-1/2 text-black" aria-hidden>
+                    <path d="M20 6 9 17l-5-5" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                )}
               </motion.div>
               <span className={`text-[10px] ${i === 6 ? "font-bold text-white" : "text-white/40"}`}>{days[i]}</span>
             </div>
