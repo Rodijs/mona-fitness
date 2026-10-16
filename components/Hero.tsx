@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { getImageProps } from "next/image";
 import { useEffect, useState } from "react";
 import { motion, type Variants } from "framer-motion";
 import EmailForm from "./EmailForm";
@@ -12,6 +12,36 @@ function badgeText(count: number | null) {
   const noun = count === 1 ? "member" : "members";
   return `Now we are building the waitlist for early access — join ${count} ${noun} already on the list.`;
 }
+
+// Hero photo. Phones and tablets get the original photo. Large landscape
+// screens (laptops, desktops) get a wider copy — soft, out-of-focus
+// scenery added on the left — anchored right, so the runner sits beside
+// the centred text instead of behind it. Squarer screens (e.g. iPad
+// landscape) keep the original, where the wide copy would crop him badly.
+const WIDE_MEDIA = "(min-width: 1024px) and (min-aspect-ratio: 3/2)";
+const HERO_ALT = "A trail runner striding along a misty mountain ridge";
+const {
+  props: { srcSet: heroWide },
+} = getImageProps({
+  alt: HERO_ALT,
+  src: "/hero-trail-wide.jpg",
+  width: 3380,
+  height: 1600,
+  sizes: "100vw",
+  quality: 75,
+});
+const {
+  props: { srcSet: heroMobile, ...heroRest },
+} = getImageProps({
+  alt: HERO_ALT,
+  src: "/hero-trail.jpg",
+  width: 2400,
+  height: 1600,
+  sizes: "100vw",
+  quality: 75,
+  loading: "eager",
+  fetchPriority: "high",
+});
 
 const container: Variants = {
   hidden: {},
@@ -49,20 +79,21 @@ export default function Hero() {
           transition={{ duration: 6, ease: [0.16, 1, 0.3, 1] }}
           className="absolute inset-0"
         >
-          <Image
-            src="/hero-trail.jpg"
-            alt="A trail runner striding along a misty mountain ridge"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-[68%_42%]"
-          />
+          <picture>
+            <source media={WIDE_MEDIA} srcSet={heroWide} />
+            <img
+              {...heroRest}
+              srcSet={heroMobile}
+              alt={HERO_ALT}
+              className="absolute inset-0 h-full w-full object-cover object-[68%_42%] [@media(min-width:1024px)_and_(min-aspect-ratio:3/2)]:object-right"
+            />
+          </picture>
         </motion.div>
 
         {/* legibility gradients */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/25 to-black/55" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/10 via-black/20 to-black/55" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/10 via-black/20 to-black/55 [@media(min-width:1024px)_and_(min-aspect-ratio:3/2)]:to-black/25" />
 
         {/* content, centered */}
         <motion.div
