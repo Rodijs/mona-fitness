@@ -104,7 +104,7 @@ export default function Features() {
             <span className="font-serif italic font-medium text-gradient">Mona</span>?
           </h2>
           <p className="mt-3 text-white/70">
-            MONA stands for Move Nation — a fitness app designed to make
+            MONA stands for Movement Nation — a fitness app designed to make
             movement simpler, more engaging, and easier to stick with.
           </p>
           <p className="mt-3 text-white/70">
