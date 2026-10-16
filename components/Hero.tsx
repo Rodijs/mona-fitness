@@ -82,10 +82,12 @@ export default function Hero() {
             variants={item}
             className="mt-6 max-w-3xl text-4xl font-extrabold uppercase leading-[1.05] tracking-tight text-white sm:text-6xl md:text-7xl"
           >
-            Your training plan,
+            Move more.
+            <br />
+            Build consistency.
             <br />
             <span className="font-serif text-3xl italic font-medium normal-case tracking-normal text-accent sm:text-5xl md:text-6xl">
-              built around you
+              See your progress.
             </span>
           </motion.h1>
 
@@ -93,8 +95,9 @@ export default function Hero() {
             variants={item}
             className="mt-6 max-w-md text-sm text-white/75 sm:text-base"
           >
-            MONA stands for Move Nation — a modern fitness app built around
-            movement, consistency, and healthy living.
+            MONA turns everyday movement into a habit. Track your reps with
+            AI, take on daily challenges, and see your progress — one workout
+            at a time.
           </motion.p>
 
           <motion.div
@@ -104,7 +107,7 @@ export default function Hero() {
           >
             <EmailForm variant="glass" onSubscribed={setCount} />
             <p className="text-xs text-white/60">
-              No spam. One email when we launch.
+              No spam. Just one email when we launch.
             </p>
           </motion.div>
         </motion.div>

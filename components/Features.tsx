@@ -31,13 +31,23 @@ function FlameIcon() {
   );
 }
 
-function SlidersIcon() {
+function ProgressIcon() {
   return (
     <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5">
-      <path d="M4 6h9M17 6h3M4 12h3M9 12h11M4 18h13M21 18h-1" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-      <circle cx="13" cy="6" r="2" stroke="currentColor" strokeWidth="1.6" />
-      <circle cx="6" cy="12" r="2" stroke="currentColor" strokeWidth="1.6" />
-      <circle cx="17" cy="18" r="2" stroke="currentColor" strokeWidth="1.6" />
+      <path
+        d="M4 20h16M5 16l4.5-4.5 3 3L19 8"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M15 8h4v4"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
@@ -61,11 +71,11 @@ const FEATURES = [
   },
   {
     number: "03",
-    title: "Personalised Fitness",
-    lead: "Training that adapts to you.",
+    title: "Personal Progress",
+    lead: "Every rep moves you forward.",
     description:
-      "MONA learns from your workouts and helps you train at the right intensity for your goals.",
-    icon: SlidersIcon,
+      "Track your workouts, see your consistency grow, and celebrate the progress you make over time. Because progress isn't just about how hard you train — it's about showing up.",
+    icon: ProgressIcon,
   },
 ];
 
@@ -94,9 +104,12 @@ export default function Features() {
             <span className="font-serif italic font-medium text-gradient">Mona</span>?
           </h2>
           <p className="mt-3 text-white/70">
-            MONA uses AI-powered movement tracking to recognize exercises,
-            count repetitions, track workouts, and help users stay motivated
-            through daily challenges and progress tracking.
+            MONA stands for Move Nation — a fitness app designed to make
+            movement simpler, more engaging, and easier to stick with.
+          </p>
+          <p className="mt-3 text-white/70">
+            From AI-powered rep counting to daily challenges and progress
+            tracking, MONA helps you turn small actions into lasting habits.
           </p>
           <p className="mt-5 text-base font-semibold tracking-tight text-accent sm:text-lg">
             Move every day. Move better. Move together.
