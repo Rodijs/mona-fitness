@@ -74,7 +74,7 @@ const FEATURES = [
     title: "Personal Progress",
     lead: "Every rep moves you forward.",
     description:
-      "Track your workouts, see your consistency grow, and celebrate the progress you make over time. Because progress isn't just about how hard you train — it's about showing up.",
+      "Track your workouts, see your consistency grow, and celebrate the progress you make over time.",
     icon: ProgressIcon,
   },
 ];

@@ -17,22 +17,22 @@ const playfair = Playfair_Display({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://mona.fitness"),
-  title: "Mona — Your AI fitness coach",
+  title: "MONA — Move & Build Consistency",
   description:
-    "Mona builds you a personalized training and nutrition plan, then adapts it as you go. Join the waitlist to get early access.",
+    "MONA turns everyday movement into a habit. Track your reps with AI, take on daily challenges, and see your progress — one workout at a time. Join the waitlist for early access.",
   openGraph: {
-    title: "Mona — Your AI fitness coach",
+    title: "MONA — Move & Build Consistency",
     description:
-      "Mona builds you a personalized training and nutrition plan, then adapts it as you go. Join the waitlist to get early access.",
+      "MONA turns everyday movement into a habit. Track your reps with AI, take on daily challenges, and see your progress — one workout at a time. Join the waitlist for early access.",
     url: "https://mona.fitness",
-    siteName: "Mona",
+    siteName: "MONA",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Mona — Your AI fitness coach",
+    title: "MONA — Move & Build Consistency",
     description:
-      "Mona builds you a personalized training and nutrition plan, then adapts it as you go. Join the waitlist to get early access.",
+      "MONA turns everyday movement into a habit. Track your reps with AI, take on daily challenges, and see your progress — one workout at a time. Join the waitlist for early access.",
   },
 };
 

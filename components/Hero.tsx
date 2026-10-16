@@ -49,20 +49,22 @@ export default function Hero() {
           transition={{ duration: 6, ease: [0.16, 1, 0.3, 1] }}
           className="absolute inset-0"
         >
-          <Image
-            src="/hero-trail.jpg"
-            alt="A trail runner striding along a misty mountain ridge"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-[68%_42%]"
-          />
+          <div data-hero-photo className="absolute inset-y-0 left-0 w-full lg:w-[175%] xl:w-[155%]">
+            <Image
+              src="/hero-trail.jpg"
+              alt="A trail runner striding along a misty mountain ridge"
+              fill
+              priority
+              sizes="(min-width: 1280px) 155vw, (min-width: 1024px) 175vw, 100vw"
+              className="object-cover object-[68%_42%] lg:object-[50%_22%]"
+            />
+          </div>
         </motion.div>
 
         {/* legibility gradients */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/25 to-black/55" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/10 via-black/20 to-black/55" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/10 via-black/20 to-black/55 lg:from-black/35 lg:via-black/20 lg:to-black/20" />
 
         {/* content, centered */}
         <motion.div
@@ -93,11 +95,13 @@ export default function Hero() {
 
           <motion.p
             variants={item}
-            className="mt-6 max-w-md text-sm text-white/75 sm:text-base"
+            className="mt-6 max-w-md text-sm text-white/75 sm:text-base lg:max-w-none"
+            data-testid="hero-intro"
           >
-            MONA turns everyday movement into a habit. Track your reps with
-            AI, take on daily challenges, and see your progress — one workout
-            at a time.
+            MONA turns everyday movement into a habit.{" "}
+            <br className="hidden lg:block" />
+            Track your reps with AI, take on daily challenges, and see your
+            progress — one workout at a time.
           </motion.p>
 
           <motion.div

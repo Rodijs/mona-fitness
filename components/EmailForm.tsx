@@ -99,10 +99,10 @@ export default function EmailForm({ variant = "solid", onSubscribed }: Props) {
           type="email"
           inputMode="email"
           autoComplete="email"
-          placeholder="Your@email.com"
+          placeholder="your@email.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className={`w-full flex-1 rounded-full border px-5 py-4 text-sm outline-none transition-colors focus:border-accent sm:text-base ${
+          className={`w-full flex-1 rounded-full border px-5 py-4 text-base outline-none transition-colors focus:border-accent ${
             isGlass
               ? "border-white/25 bg-white/10 text-white placeholder:text-white/60 backdrop-blur-md"
               : "border-border bg-surface text-foreground placeholder:text-muted"
