@@ -24,7 +24,7 @@ const {
   props: { srcSet: heroWide },
 } = getImageProps({
   alt: HERO_ALT,
-  src: "/hero-trail-wide.jpg",
+  src: "/hero-trail-wide-v2.jpg",
   width: 3380,
   height: 1600,
   sizes: "100vw",
