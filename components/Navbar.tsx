@@ -36,7 +36,9 @@ export default function Navbar() {
           <Logo className="h-12 w-auto sm:h-14" />
         </a>
 
-        <AnimatedCTA href="#features" className="hidden md:inline-flex">
+        {/* Also on phones (AnimatedCTA's own inline-flex wins over "hidden"); it
+            closes the menu if that's open, so the page can scroll again. */}
+        <AnimatedCTA href="#features" className="hidden md:inline-flex" onClick={() => setMenuOpen(false)}>
           Read More
         </AnimatedCTA>
 

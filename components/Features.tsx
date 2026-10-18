@@ -99,7 +99,7 @@ export default function Features() {
           transition={{ duration: 0.5 }}
           className="mx-auto mb-14 max-w-xl text-center"
         >
-          <h2 id="features" className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+          <h2 id="features" className="scroll-mt-28 text-3xl font-extrabold tracking-tight text-white sm:scroll-mt-32 sm:text-4xl">
             What is{" "}
             <span className="font-serif italic font-medium text-gradient">Mona</span>?
           </h2>

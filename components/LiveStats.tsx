@@ -261,21 +261,26 @@ function UsersWidget({ s, on }: { s: Stats; on: boolean }) {
 function RepsWidget({ s, on }: { s: Stats; on: boolean }) {
   const reduce = useReducedMotion();
   const max = Math.max(1, ...s.repsDaily);
+  // The number is the sum of the 14 bars underneath it (= the last 7 days +
+  // the 7 before), so the headline and the chart always agree.
+  const twoWeeks = s.repsDaily.reduce((a, n) => a + n, 0);
+  // The second week against the first, both visible in the chart.
   const change =
     s.repsPrevWeek > 0 ? Math.round(((s.repsWeek - s.repsPrevWeek) / s.repsPrevWeek) * 100) : null;
+  const half = Math.floor(s.repsDaily.length / 2);
   return (
-    <Widget index={1} label="Reps this week" icon={Icon.reps} className="sm:col-span-2 lg:col-span-4">
+    <Widget index={1} label="Reps last two weeks" icon={Icon.reps} className="sm:col-span-2 lg:col-span-4">
       <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
         <div>
           <Big>
-            <CountUp value={s.repsWeek} start={on} />
+            <CountUp value={twoWeeks} start={on} />
           </Big>
           <div className="mt-2 flex flex-wrap items-center gap-2 text-sm text-white/60">
             {change !== null && change !== 0 && (
               <span
                 className={`rounded-full px-2 py-0.5 text-xs font-bold ${change > 0 ? "bg-accent/15 text-accent" : "bg-white/10 text-white/70"}`}
               >
-                {change > 0 ? "↑" : "↓"} {Math.abs(change)}% vs last week
+                {change > 0 ? "↑" : "↓"} {Math.abs(change)}% this week vs the week before
               </span>
             )}
             <span>{fmt(s.repsTotal)} all time</span>
@@ -291,12 +296,17 @@ function RepsWidget({ s, on }: { s: Stats; on: boolean }) {
           </span>
         )}
       </div>
-      <div className="mt-auto flex h-28 items-end gap-1.5 pt-6 sm:h-32 sm:gap-2" aria-label="Reps per day, last 14 days" role="img">
+      <div
+        className="mt-auto flex h-28 items-end gap-1.5 pt-6 sm:h-32 sm:gap-2"
+        aria-label={`Reps per day, last 14 days: ${fmt(s.repsPrevWeek)} the week before, ${fmt(s.repsWeek)} in the last 7 days`}
+        role="img"
+      >
         {s.repsDaily.map((n, i) => {
           const today = i === s.repsDaily.length - 1;
           const h = n > 0 ? Math.max(8, (n / max) * 100) : 3;
           return (
-            <div key={i} className="group/bar relative flex h-full flex-1 items-end">
+            // A little extra space where the second week starts.
+            <div key={i} className={`group/bar relative flex h-full flex-1 items-end ${i === half ? "ml-1.5 sm:ml-2" : ""}`}>
               <motion.div
                 className="w-full origin-bottom rounded-t-md"
                 style={{
@@ -319,9 +329,10 @@ function RepsWidget({ s, on }: { s: Stats; on: boolean }) {
           );
         })}
       </div>
-      <div className="mt-2 flex justify-between text-[11px] text-white/40">
-        <span>14 days ago</span>
-        <span>Today</span>
+      {/* One label per week, centred under its seven bars. */}
+      <div className="mt-2 flex gap-1.5 text-[11px] text-white/40 sm:gap-2">
+        <span className="flex-1 text-center">Week before · {fmt(s.repsPrevWeek)}</span>
+        <span className="ml-1.5 flex-1 text-center text-white/60 sm:ml-2">Last 7 days · {fmt(s.repsWeek)}</span>
       </div>
     </Widget>
   );
