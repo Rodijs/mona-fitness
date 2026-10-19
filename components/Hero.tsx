@@ -111,7 +111,7 @@ export default function Hero() {
 
           <motion.h1
             variants={item}
-            className="mt-6 max-w-3xl text-4xl font-extrabold uppercase leading-[1.05] tracking-tight text-white sm:text-6xl md:text-7xl"
+            className="mt-6 max-w-3xl text-3xl font-extrabold uppercase leading-[1.05] tracking-tight text-white sm:text-5xl md:text-6xl"
           >
             Move &amp; Build
             <br />

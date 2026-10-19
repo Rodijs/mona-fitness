@@ -680,7 +680,7 @@ function BreathOrb({ on }: { on: boolean }) {
   const ease = [0.45, 0, 0.55, 1] as const;
   return (
     <div className="flex shrink-0 flex-col items-center gap-1.5" aria-hidden>
-    <div className="relative flex h-24 w-24 items-center justify-center sm:h-28 sm:w-28">
+    <div className="relative flex h-24 w-24 items-center justify-center sm:h-32 sm:w-32 md:h-28 md:w-28 lg:h-36 lg:w-36">
       {[1.0, 0.82, 0.64].map((r, i) => (
         <motion.span
           key={r}
@@ -701,10 +701,10 @@ function BreathOrb({ on }: { on: boolean }) {
         transition={{ duration: on && play ? 4 : 0.8, ease }}
       />
     </div>
-      <div className="pointer-events-none h-4 w-28 overflow-hidden text-center">
+      <div className="pointer-events-none h-5 w-32 overflow-hidden text-center sm:w-36 md:w-32 lg:w-36">
         <motion.span
           key={play ? String(inhale) : "still"}
-          className="block text-[9px] font-semibold uppercase tracking-[0.2em] text-white/60"
+          className="block text-[10px] font-semibold uppercase tracking-[0.22em] text-white/75 sm:text-xs md:text-[10px] lg:text-xs"
           initial={play ? { y: 12, opacity: 0 } : false}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5, ease: EASE }}
@@ -870,7 +870,7 @@ function MindWidget({ m, on }: { m: MindStats; on: boolean }) {
       <div className="grid gap-6 md:grid-cols-[1fr_1.1fr] md:items-center md:gap-8 lg:grid-cols-[1fr_1.25fr] lg:gap-10">
         {/* Numbers + breathing orb, then the 14-day wave */}
         <div className="min-w-0">
-          <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center justify-between gap-4 sm:justify-start sm:gap-10 md:justify-between md:gap-3 lg:justify-start lg:gap-14">
             <div className="min-w-0">
               <div className="text-4xl font-extrabold leading-none tracking-tight text-white sm:text-5xl">
                 <CountUp value={m.minutesTotal} digits={m.minutesTotal < 100 ? 1 : 0} start={on} />
@@ -881,7 +881,7 @@ function MindWidget({ m, on }: { m: MindStats; on: boolean }) {
                 {fmt(m.peopleTotal)} {m.peopleTotal === 1 ? "person" : "people"}
               </p>
               {m.minutesWeek > 0 && (
-                <span className="mt-2.5 inline-flex items-center gap-2 rounded-full border border-[#B4F5D8]/30 bg-[#B4F5D8]/10 px-2.5 py-0.5 text-xs font-semibold text-[#B4F5D8]">
+                <span className="mt-2.5 inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-[#B4F5D8]/30 bg-[#B4F5D8]/10 px-2.5 py-0.5 text-xs font-semibold text-[#B4F5D8]">
                   <span className="relative flex h-1.5 w-1.5">
                     {!reduce && <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#B4F5D8] opacity-70" />}
                     <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#B4F5D8]" />
