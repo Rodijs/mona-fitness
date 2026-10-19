@@ -679,7 +679,8 @@ function BreathOrb({ on }: { on: boolean }) {
   const scale = play ? (inhale ? 1 : 0.72) : 0.9;
   const ease = [0.45, 0, 0.55, 1] as const;
   return (
-    <div className="relative mx-auto flex h-44 w-44 items-center justify-center sm:h-52 sm:w-52" aria-hidden>
+    <div className="flex shrink-0 flex-col items-center gap-1.5" aria-hidden>
+    <div className="relative flex h-24 w-24 items-center justify-center sm:h-28 sm:w-28">
       {[1.0, 0.82, 0.64].map((r, i) => (
         <motion.span
           key={r}
@@ -693,16 +694,17 @@ function BreathOrb({ on }: { on: boolean }) {
         className="relative flex h-[46%] w-[46%] items-center justify-center rounded-full"
         style={{
           background: `radial-gradient(circle at 35% 30%, #ffffff 0%, ${MINT} 30%, #43C98F 75%, rgba(0,0,0,0.25) 100%)`,
-          boxShadow: "0 0 50px -6px rgba(110,230,175,0.75), inset 0 -8px 18px rgba(0,0,0,0.15)",
+          boxShadow: "0 0 32px -4px rgba(110,230,175,0.75), inset 0 -5px 12px rgba(0,0,0,0.15)",
         }}
         initial={{ scale: 0.4, opacity: 0 }}
         animate={on ? { scale, opacity: 1 } : {}}
         transition={{ duration: on && play ? 4 : 0.8, ease }}
       />
-      <div className="pointer-events-none absolute -bottom-1 left-0 right-0 h-5 overflow-hidden text-center">
+    </div>
+      <div className="pointer-events-none h-4 w-28 overflow-hidden text-center">
         <motion.span
           key={play ? String(inhale) : "still"}
-          className="block text-[11px] font-semibold uppercase tracking-[0.22em] text-white/70"
+          className="block text-[9px] font-semibold uppercase tracking-[0.2em] text-white/60"
           initial={play ? { y: 12, opacity: 0 } : false}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5, ease: EASE }}
@@ -745,8 +747,8 @@ function MindWave({ daily, on }: { daily: number[]; on: boolean }) {
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
-  const H = 72;
-  const pad = 7; // room for today's dot and the glow
+  const H = 48;
+  const pad = 6; // room for today's dot and the glow
   const max = Math.max(1, ...daily);
   const pts = daily.map((v, i): [number, number] => [
     Math.round(pad + (i / (daily.length - 1)) * (W - pad * 2)),
@@ -757,8 +759,8 @@ function MindWave({ daily, on }: { daily: number[]; on: boolean }) {
   const last = pts[pts.length - 1];
   const total = daily.reduce((a, n) => a + n, 0);
   return (
-    <div className="mt-6">
-      <div ref={box} className="h-[72px] w-full">
+    <div className="mt-4">
+      <div ref={box} className="h-12 w-full">
         {W > 0 && (
           <svg
             width={W}
@@ -821,7 +823,7 @@ function MindWave({ daily, on }: { daily: number[]; on: boolean }) {
           </svg>
         )}
       </div>
-      <div className="mt-2 flex justify-between text-[11px] text-white/40">
+      <div className="mt-1.5 flex justify-between text-[11px] text-white/40">
         <span>2 weeks ago</span>
         <span className="text-white/60">Today</span>
       </div>
@@ -833,7 +835,7 @@ function PracticeRing({ share, color, on, delay }: { share: number; color: strin
   const r = 15;
   const c = 2 * Math.PI * r;
   return (
-    <svg viewBox="0 0 40 40" className="h-10 w-10 shrink-0 -rotate-90" aria-hidden>
+    <svg viewBox="0 0 40 40" className="h-7 w-7 shrink-0 -rotate-90" aria-hidden>
       <circle cx="20" cy="20" r={r} fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="5" />
       <motion.circle
         cx="20"
@@ -865,67 +867,67 @@ function MindWidget({ m, on }: { m: MindStats; on: boolean }) {
       className="sm:col-span-2 lg:col-span-6"
       backdrop={<MindAurora on={on} />}
     >
-      <div className="grid items-center gap-8 lg:grid-cols-[1.15fr_auto_1.2fr] lg:gap-10">
-        {/* Numbers + 14-day wave */}
+      <div className="grid gap-6 md:grid-cols-[1fr_1.1fr] md:items-center md:gap-8 lg:grid-cols-[1fr_1.25fr] lg:gap-10">
+        {/* Numbers + breathing orb, then the 14-day wave */}
         <div className="min-w-0">
-          <Big>
-            <CountUp value={m.minutesTotal} digits={m.minutesTotal < 100 ? 1 : 0} start={on} />
-            <Unit>min</Unit>
-          </Big>
-          <p className="mt-2 text-sm text-white/60">
-            {fmt(m.sessionsTotal)} breathing {m.sessionsTotal === 1 ? "session" : "sessions"} by{" "}
-            {fmt(m.peopleTotal)} {m.peopleTotal === 1 ? "person" : "people"}
-          </p>
-          {m.minutesWeek > 0 && (
-            <span className="mt-3 inline-flex items-center gap-2 rounded-full border border-[#B4F5D8]/30 bg-[#B4F5D8]/10 px-3 py-1 text-xs font-semibold text-[#B4F5D8]">
-              <span className="relative flex h-2 w-2">
-                {!reduce && <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#B4F5D8] opacity-70" />}
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-[#B4F5D8]" />
-              </span>
-              +{fmtMin(m.minutesWeek)} min this week
-            </span>
-          )}
+          <div className="flex items-center justify-between gap-4">
+            <div className="min-w-0">
+              <div className="text-4xl font-extrabold leading-none tracking-tight text-white sm:text-5xl">
+                <CountUp value={m.minutesTotal} digits={m.minutesTotal < 100 ? 1 : 0} start={on} />
+                <Unit>min</Unit>
+              </div>
+              <p className="mt-2 text-sm text-white/60">
+                {fmt(m.sessionsTotal)} breathing {m.sessionsTotal === 1 ? "session" : "sessions"} by{" "}
+                {fmt(m.peopleTotal)} {m.peopleTotal === 1 ? "person" : "people"}
+              </p>
+              {m.minutesWeek > 0 && (
+                <span className="mt-2.5 inline-flex items-center gap-2 rounded-full border border-[#B4F5D8]/30 bg-[#B4F5D8]/10 px-2.5 py-0.5 text-xs font-semibold text-[#B4F5D8]">
+                  <span className="relative flex h-1.5 w-1.5">
+                    {!reduce && <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#B4F5D8] opacity-70" />}
+                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#B4F5D8]" />
+                  </span>
+                  +{fmtMin(m.minutesWeek)} min this week
+                </span>
+              )}
+            </div>
+            <BreathOrb on={on} />
+          </div>
           <MindWave daily={m.daily} on={on} />
-        </div>
-
-        {/* Breathing orb */}
-        <div className="order-first lg:order-none">
-          <BreathOrb on={on} />
         </div>
 
         {/* Practices, like rings on a watch */}
         <div className="min-w-0">
-          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-white/45">Favourite practices</p>
+          <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/45">Favourite practices</p>
           {top.length === 0 ? (
             <p className="text-sm text-white/50">The first breathing sessions will show up here.</p>
           ) : (
-            <ul className="space-y-2.5">
+            <ul className="grid gap-1.5 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2">
               {top.map((p, i) => {
                 const meta = practiceMeta(p.id);
                 return (
                   <motion.li
                     key={p.id}
-                    className="flex items-center gap-3 rounded-xl border border-white/[0.06] bg-white/[0.03] px-3 py-2 backdrop-blur-sm"
+                    className="flex items-center gap-2.5 rounded-xl border border-white/[0.06] bg-white/[0.03] px-2.5 py-1.5 backdrop-blur-sm"
                     initial={{ opacity: 0, x: 16 }}
                     animate={on ? { opacity: 1, x: 0 } : {}}
                     transition={{ duration: 0.5, ease: EASE, delay: 0.5 + i * 0.08 }}
                   >
                     <PracticeRing share={p.minutes / total} color={meta.core} on={on} delay={0.7 + i * 0.08} />
-                    <span className="min-w-0 flex-1 truncate text-sm font-semibold text-white/85">{meta.name}</span>
-                    <span className="shrink-0 text-right">
-                      <span className="text-base font-extrabold tabular-nums text-white">{fmtMin(p.minutes)}</span>
-                      <span className="ml-1 text-xs text-white/45">min · {fmt(p.sessions)}×</span>
+                    <span className="min-w-0 flex-1 truncate text-[13px] font-semibold text-white/85">{meta.name}</span>
+                    <span className="shrink-0 whitespace-nowrap text-right">
+                      <span className="text-sm font-extrabold tabular-nums text-white">{fmtMin(p.minutes)}</span>
+                      <span className="ml-1 text-[11px] text-white/45">min · {fmt(p.sessions)}×</span>
                     </span>
                   </motion.li>
                 );
               })}
             </ul>
           )}
+          <p className="mt-3 text-[11px] text-white/40">
+            Guided breathing in the app&apos;s Mind tab · how people feel stays on their phone
+          </p>
         </div>
       </div>
-      <p className="mt-6 text-xs text-white/45">
-        Guided breathing in the app&apos;s Mind tab · how people feel stays on their phone
-      </p>
     </Widget>
   );
 }

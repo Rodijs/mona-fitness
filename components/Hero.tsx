@@ -115,7 +115,7 @@ export default function Hero() {
           >
             Move &amp; Build
             <br />
-            <span className="font-serif text-3xl italic font-medium normal-case tracking-normal text-accent sm:text-5xl md:text-6xl">
+            <span className="font-serif text-[2.75rem] italic font-medium normal-case leading-[1.1] tracking-normal text-accent sm:text-7xl md:text-[5.5rem]">
               Consistency
             </span>
           </motion.h1>
