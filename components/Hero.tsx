@@ -113,12 +113,10 @@ export default function Hero() {
             variants={item}
             className="mt-6 max-w-3xl text-4xl font-extrabold uppercase leading-[1.05] tracking-tight text-white sm:text-6xl md:text-7xl"
           >
-            Move more.
-            <br />
-            Build consistency.
+            Move &amp; Build
             <br />
             <span className="font-serif text-3xl italic font-medium normal-case tracking-normal text-accent sm:text-5xl md:text-6xl">
-              See your progress.
+              Consistency
             </span>
           </motion.h1>
 

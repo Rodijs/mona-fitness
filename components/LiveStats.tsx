@@ -13,7 +13,7 @@ import {
   type Variants,
 } from "framer-motion";
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import type { LiveStats as Stats } from "@/lib/liveStats";
+import type { LiveStats as Stats, MindStats } from "@/lib/liveStats";
 
 const ACCENT = "#c8ff3d";
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -121,12 +121,15 @@ function Widget({
   className = "",
   label,
   icon,
+  backdrop,
 }: {
   children: ReactNode;
   index: number;
   className?: string;
   label: string;
   icon: ReactNode;
+  /** Decoration drawn under the content, inside the rounded card. */
+  backdrop?: ReactNode;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   return (
@@ -145,6 +148,7 @@ function Widget({
       transition={{ type: "spring", stiffness: 300, damping: 24 }}
       className={`group relative overflow-hidden rounded-2xl border border-white/15 bg-black/40 p-6 backdrop-blur-md transition-colors hover:border-accent/40 ${className}`}
     >
+      {backdrop}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
@@ -208,6 +212,12 @@ const Icon = {
   flame: (
     <svg viewBox="0 0 24 24" fill="none" className="h-[18px] w-[18px]">
       <path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  ),
+  // Breath / wind lines, like the app's Mind tab.
+  mind: (
+    <svg viewBox="0 0 24 24" fill="none" className="h-[18px] w-[18px]">
+      <path d="M3 9h11a3 3 0 1 0-3-3M3 15h15a3 3 0 1 1-3 3M3 12h7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
     </svg>
   ),
   trophy: (
@@ -599,6 +609,327 @@ function ChallengesWidget({ s, on }: { s: Stats; on: boolean }) {
   );
 }
 
+// The app's Mind practices: names and colours as in the app
+// (move-nation-ai src/lib/mindPractices.ts).
+const PRACTICES: Record<string, { name: string; core: string; deep: string }> = {
+  "cool-down": { name: "Cool-down Sigh", core: "#C8FF8F", deep: "#8FE34F" },
+  box: { name: "Box Breathing", core: "#A9DCFF", deep: "#4FA8E3" },
+  balance: { name: "Balanced Breath", core: "#B4F5D8", deep: "#43C98F" },
+  sleep: { name: "Wind Down 4·7·8", core: "#C9BCFF", deep: "#7A66E0" },
+  focus: { name: "Pre-workout Focus", core: "#FFE3A0", deep: "#FFAE45" },
+};
+const practiceMeta = (id: string) =>
+  PRACTICES[id] ?? {
+    name: id.replace(/[-_]+/g, " ").replace(/^./, (c) => c.toUpperCase()),
+    core: "#ffffff",
+    deep: "#9a9a9a",
+  };
+const MINT = "#B4F5D8";
+
+/** "9.5" under ten minutes, whole minutes above. */
+const fmtMin = (n: number) => fmt(n, n < 10 && n % 1 ? 1 : 0);
+
+/** Slow drifting colour light behind the Mind card, in the practices' tones. */
+function MindAurora({ on }: { on: boolean }) {
+  const reduce = useReducedMotion();
+  const play = on && !reduce;
+  const blobs = [
+    { c: "rgba(67,201,143,0.30)", cls: "-left-24 -top-28 h-80 w-80", x: [0, 60, 0], y: [0, 30, 0], d: 16 },
+    { c: "rgba(122,102,224,0.26)", cls: "left-1/3 -bottom-36 h-96 w-96", x: [0, -50, 0], y: [0, -30, 0], d: 19 },
+    { c: "rgba(200,255,61,0.16)", cls: "-right-20 -top-24 h-80 w-80", x: [0, -40, 0], y: [0, 40, 0], d: 22 },
+  ];
+  return (
+    <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl">
+      {blobs.map((b, i) => (
+        <motion.div
+          key={i}
+          className={`absolute rounded-full blur-3xl ${b.cls}`}
+          style={{ background: `radial-gradient(circle, ${b.c}, transparent 70%)` }}
+          initial={{ opacity: 0 }}
+          animate={play ? { opacity: 1, x: b.x, y: b.y } : { opacity: on ? 1 : 0 }}
+          transition={
+            play
+              ? { opacity: { duration: 1.2 }, x: { duration: b.d, repeat: Infinity, ease: "easeInOut" }, y: { duration: b.d * 1.2, repeat: Infinity, ease: "easeInOut" } }
+              : { duration: 1.2 }
+          }
+        />
+      ))}
+      {/* fine grain, like frosted glass */}
+      <div
+        className="absolute inset-0 opacity-[0.08] mix-blend-overlay"
+        style={{
+          backgroundImage:
+            "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E\")",
+        }}
+      />
+    </div>
+  );
+}
+
+/** A breathing orb: in for 4 s, out for 4 s — the app's Mind sessions in a nutshell. */
+function BreathOrb({ on }: { on: boolean }) {
+  const reduce = useReducedMotion();
+  const play = on && !reduce;
+  const [inhale, setInhale] = useState(true);
+  useEffect(() => {
+    if (!play) return;
+    const t = setInterval(() => setInhale((v) => !v), 4000);
+    return () => clearInterval(t);
+  }, [play]);
+  const scale = play ? (inhale ? 1 : 0.72) : 0.9;
+  const ease = [0.45, 0, 0.55, 1] as const;
+  return (
+    <div className="relative mx-auto flex h-44 w-44 items-center justify-center sm:h-52 sm:w-52" aria-hidden>
+      {[1.0, 0.82, 0.64].map((r, i) => (
+        <motion.span
+          key={r}
+          className="absolute rounded-full border"
+          style={{ width: `${r * 100}%`, height: `${r * 100}%`, borderColor: `rgba(180,245,216,${0.12 + i * 0.08})` }}
+          animate={{ scale: play ? (inhale ? 1 : 0.8 + i * 0.04) : 0.95, opacity: play ? (inhale ? 1 : 0.45) : 0.7 }}
+          transition={{ duration: 4, ease, delay: i * 0.12 }}
+        />
+      ))}
+      <motion.div
+        className="relative flex h-[46%] w-[46%] items-center justify-center rounded-full"
+        style={{
+          background: `radial-gradient(circle at 35% 30%, #ffffff 0%, ${MINT} 30%, #43C98F 75%, rgba(0,0,0,0.25) 100%)`,
+          boxShadow: "0 0 50px -6px rgba(110,230,175,0.75), inset 0 -8px 18px rgba(0,0,0,0.15)",
+        }}
+        initial={{ scale: 0.4, opacity: 0 }}
+        animate={on ? { scale, opacity: 1 } : {}}
+        transition={{ duration: on && play ? 4 : 0.8, ease }}
+      />
+      <div className="pointer-events-none absolute -bottom-1 left-0 right-0 h-5 overflow-hidden text-center">
+        <motion.span
+          key={play ? String(inhale) : "still"}
+          className="block text-[11px] font-semibold uppercase tracking-[0.22em] text-white/70"
+          initial={play ? { y: 12, opacity: 0 } : false}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5, ease: EASE }}
+        >
+          {play ? (inhale ? "Breathe in" : "Breathe out") : "Breathe"}
+        </motion.span>
+      </div>
+    </div>
+  );
+}
+
+/** Smooth line through 14 points (Catmull-Rom → Bézier). */
+function smoothPath(pts: [number, number][]) {
+  if (pts.length < 2) return "";
+  let d = `M${pts[0][0]} ${pts[0][1]}`;
+  for (let i = 0; i < pts.length - 1; i++) {
+    const p0 = pts[i - 1] ?? pts[i];
+    const p1 = pts[i];
+    const p2 = pts[i + 1];
+    const p3 = pts[i + 2] ?? p2;
+    const c1x = p1[0] + (p2[0] - p0[0]) / 6;
+    const c1y = p1[1] + (p2[1] - p0[1]) / 6;
+    const c2x = p2[0] - (p3[0] - p1[0]) / 6;
+    const c2y = p2[1] - (p3[1] - p1[1]) / 6;
+    d += ` C${c1x.toFixed(1)} ${c1y.toFixed(1)}, ${c2x.toFixed(1)} ${c2y.toFixed(1)}, ${p2[0]} ${p2[1]}`;
+  }
+  return d;
+}
+
+function MindWave({ daily, on }: { daily: number[]; on: boolean }) {
+  const reduce = useReducedMotion();
+  // Drawn at the box's real pixel width, so the line keeps its thickness
+  // and the draw-in animation covers the whole curve at every screen size.
+  const box = useRef<HTMLDivElement>(null);
+  const [W, setW] = useState(0);
+  useEffect(() => {
+    const el = box.current;
+    if (!el) return;
+    const ro = new ResizeObserver(([e]) => setW(Math.round(e.contentRect.width)));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+  const H = 72;
+  const pad = 7; // room for today's dot and the glow
+  const max = Math.max(1, ...daily);
+  const pts = daily.map((v, i): [number, number] => [
+    Math.round(pad + (i / (daily.length - 1)) * (W - pad * 2)),
+    Math.round(H - pad - (v / max) * (H - pad * 2 - 6)),
+  ]);
+  const line = W > 0 ? smoothPath(pts) : "";
+  const area = line ? `${line} L${W - pad} ${H} L${pad} ${H} Z` : "";
+  const last = pts[pts.length - 1];
+  const total = daily.reduce((a, n) => a + n, 0);
+  return (
+    <div className="mt-6">
+      <div ref={box} className="h-[72px] w-full">
+        {W > 0 && (
+          <svg
+            width={W}
+            height={H}
+            viewBox={`0 0 ${W} ${H}`}
+            className="overflow-visible"
+            role="img"
+            aria-label={`Mindful minutes per day over the last 14 days, ${fmtMin(total)} in total`}
+          >
+            <defs>
+              <linearGradient id="mind-fill" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor={MINT} stopOpacity="0.35" />
+                <stop offset="100%" stopColor={MINT} stopOpacity="0" />
+              </linearGradient>
+              <linearGradient id="mind-line" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stopColor={MINT} />
+                <stop offset="100%" stopColor={ACCENT} />
+              </linearGradient>
+            </defs>
+            <motion.path
+              d={area}
+              fill="url(#mind-fill)"
+              initial={{ opacity: 0 }}
+              animate={on ? { opacity: 1 } : {}}
+              transition={{ duration: 1.2, delay: 0.9 }}
+            />
+            <motion.path
+              d={line}
+              fill="none"
+              stroke="url(#mind-line)"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              initial={{ pathLength: 0 }}
+              animate={on ? { pathLength: 1 } : {}}
+              transition={{ duration: 1.8, ease: EASE, delay: 0.4 }}
+              style={{ filter: "drop-shadow(0 0 6px rgba(180,245,216,0.55))" }}
+            />
+            {/* Today */}
+            <motion.g
+              initial={{ scale: 0, opacity: 0 }}
+              animate={on ? { scale: 1, opacity: 1 } : {}}
+              transition={{ delay: 2.1, type: "spring", stiffness: 400, damping: 16 }}
+              style={{ transformOrigin: `${last[0]}px ${last[1]}px` }}
+            >
+              {!reduce && on && (
+                <motion.circle
+                  cx={last[0]}
+                  cy={last[1]}
+                  r={6}
+                  fill="rgba(200,255,61,0.35)"
+                  initial={{ scale: 1, opacity: 0.7 }}
+                  animate={{ scale: [1, 2.2], opacity: [0.7, 0] }}
+                  transition={{ duration: 2.2, repeat: Infinity, ease: "easeOut", delay: 2.3 }}
+                  style={{ transformBox: "fill-box", transformOrigin: "center" }}
+                />
+              )}
+              <circle cx={last[0]} cy={last[1]} r={6} fill="rgba(200,255,61,0.3)" />
+              <circle cx={last[0]} cy={last[1]} r={3.5} fill="#fff" />
+            </motion.g>
+          </svg>
+        )}
+      </div>
+      <div className="mt-2 flex justify-between text-[11px] text-white/40">
+        <span>2 weeks ago</span>
+        <span className="text-white/60">Today</span>
+      </div>
+    </div>
+  );
+}
+
+function PracticeRing({ share, color, on, delay }: { share: number; color: string; on: boolean; delay: number }) {
+  const r = 15;
+  const c = 2 * Math.PI * r;
+  return (
+    <svg viewBox="0 0 40 40" className="h-10 w-10 shrink-0 -rotate-90" aria-hidden>
+      <circle cx="20" cy="20" r={r} fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="5" />
+      <motion.circle
+        cx="20"
+        cy="20"
+        r={r}
+        fill="none"
+        stroke={color}
+        strokeWidth="5"
+        strokeLinecap="round"
+        strokeDasharray={c}
+        initial={{ strokeDashoffset: c }}
+        animate={on ? { strokeDashoffset: c * (1 - Math.max(0.04, share)) } : {}}
+        transition={{ duration: 1.3, ease: EASE, delay }}
+        style={{ filter: `drop-shadow(0 0 4px ${color}66)` }}
+      />
+    </svg>
+  );
+}
+
+function MindWidget({ m, on }: { m: MindStats; on: boolean }) {
+  const reduce = useReducedMotion();
+  const total = m.practices.reduce((a, p) => a + p.minutes, 0) || 1;
+  const top = m.practices.slice(0, 5);
+  return (
+    <Widget
+      index={5}
+      label="Mindful minutes"
+      icon={Icon.mind}
+      className="sm:col-span-2 lg:col-span-6"
+      backdrop={<MindAurora on={on} />}
+    >
+      <div className="grid items-center gap-8 lg:grid-cols-[1.15fr_auto_1.2fr] lg:gap-10">
+        {/* Numbers + 14-day wave */}
+        <div className="min-w-0">
+          <Big>
+            <CountUp value={m.minutesTotal} digits={m.minutesTotal < 100 ? 1 : 0} start={on} />
+            <Unit>min</Unit>
+          </Big>
+          <p className="mt-2 text-sm text-white/60">
+            {fmt(m.sessionsTotal)} breathing {m.sessionsTotal === 1 ? "session" : "sessions"} by{" "}
+            {fmt(m.peopleTotal)} {m.peopleTotal === 1 ? "person" : "people"}
+          </p>
+          {m.minutesWeek > 0 && (
+            <span className="mt-3 inline-flex items-center gap-2 rounded-full border border-[#B4F5D8]/30 bg-[#B4F5D8]/10 px-3 py-1 text-xs font-semibold text-[#B4F5D8]">
+              <span className="relative flex h-2 w-2">
+                {!reduce && <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#B4F5D8] opacity-70" />}
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-[#B4F5D8]" />
+              </span>
+              +{fmtMin(m.minutesWeek)} min this week
+            </span>
+          )}
+          <MindWave daily={m.daily} on={on} />
+        </div>
+
+        {/* Breathing orb */}
+        <div className="order-first lg:order-none">
+          <BreathOrb on={on} />
+        </div>
+
+        {/* Practices, like rings on a watch */}
+        <div className="min-w-0">
+          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-white/45">Favourite practices</p>
+          {top.length === 0 ? (
+            <p className="text-sm text-white/50">The first breathing sessions will show up here.</p>
+          ) : (
+            <ul className="space-y-2.5">
+              {top.map((p, i) => {
+                const meta = practiceMeta(p.id);
+                return (
+                  <motion.li
+                    key={p.id}
+                    className="flex items-center gap-3 rounded-xl border border-white/[0.06] bg-white/[0.03] px-3 py-2 backdrop-blur-sm"
+                    initial={{ opacity: 0, x: 16 }}
+                    animate={on ? { opacity: 1, x: 0 } : {}}
+                    transition={{ duration: 0.5, ease: EASE, delay: 0.5 + i * 0.08 }}
+                  >
+                    <PracticeRing share={p.minutes / total} color={meta.core} on={on} delay={0.7 + i * 0.08} />
+                    <span className="min-w-0 flex-1 truncate text-sm font-semibold text-white/85">{meta.name}</span>
+                    <span className="shrink-0 text-right">
+                      <span className="text-base font-extrabold tabular-nums text-white">{fmtMin(p.minutes)}</span>
+                      <span className="ml-1 text-xs text-white/45">min · {fmt(p.sessions)}×</span>
+                    </span>
+                  </motion.li>
+                );
+              })}
+            </ul>
+          )}
+        </div>
+      </div>
+      <p className="mt-6 text-xs text-white/45">
+        Guided breathing in the app&apos;s Mind tab · how people feel stays on their phone
+      </p>
+    </Widget>
+  );
+}
+
 // ------------------------------------------------------------------ section
 
 /** Green "Ready to Join?" button: glides up to the waitlist form in the hero
@@ -705,10 +1036,11 @@ export default function LiveStats() {
             <StreakWidget s={data} on={inView} />
             <RunWidget s={data} on={inView} />
             <ChallengesWidget s={data} on={inView} />
+            {data.mind && <MindWidget m={data.mind} on={inView} />}
           </motion.div>
         ) : (
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-6" aria-busy="true">
-            {["lg:col-span-2", "sm:col-span-2 lg:col-span-4", "lg:col-span-2", "lg:col-span-2", "lg:col-span-2"].map((c, i) => (
+            {["lg:col-span-2", "sm:col-span-2 lg:col-span-4", "lg:col-span-2", "lg:col-span-2", "lg:col-span-2", "sm:col-span-2 lg:col-span-6"].map((c, i) => (
               <div key={i} className={`h-64 animate-pulse rounded-2xl border border-white/10 bg-white/[0.04] ${c}`} />
             ))}
           </div>

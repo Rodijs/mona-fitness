@@ -34,7 +34,26 @@ export type LiveStats = {
   challengesTotal: number;
   challengesActive: number;
   challengesWeek: number;
+  /** Breathing sessions in the app's Mind tab. Null until the database
+   *  sends Mind totals (older version) — the Mind widget then stays hidden. */
+  mind: MindStats | null;
   generatedAt: string;
+};
+
+export type MindPractice = { id: string; minutes: number; sessions: number };
+
+export type MindStats = {
+  minutesTotal: number;
+  minutesWeek: number;
+  minutesPrevWeek: number;
+  sessionsTotal: number;
+  sessionsWeek: number;
+  peopleTotal: number;
+  peopleWeek: number;
+  /** Most minutes first. */
+  practices: MindPractice[];
+  /** Mindful minutes per day, oldest first, last 14 days (today last). */
+  daily: number[];
 };
 
 const num = (v: unknown): number => {
@@ -45,6 +64,26 @@ const numList = (v: unknown, len: number): number[] => {
   const arr = Array.isArray(v) ? v : [];
   return Array.from({ length: len }, (_, i) => num(arr[i]));
 };
+
+function parseMind(r: Record<string, unknown>): MindStats | null {
+  if (r.mind_minutes_total === undefined || r.mind_sessions_total === undefined) return null;
+  const practices = (Array.isArray(r.mind_practices) ? r.mind_practices : [])
+    .filter((p): p is Record<string, unknown> => !!p && typeof p === "object")
+    .map((p) => ({ id: String(p.id ?? ""), minutes: num(p.minutes), sessions: num(p.sessions) }))
+    .filter((p) => p.id && p.sessions > 0)
+    .sort((a, b) => b.minutes - a.minutes);
+  return {
+    minutesTotal: num(r.mind_minutes_total),
+    minutesWeek: num(r.mind_minutes_7d),
+    minutesPrevWeek: num(r.mind_minutes_prev_7d),
+    sessionsTotal: num(r.mind_sessions_total),
+    sessionsWeek: num(r.mind_sessions_7d),
+    peopleTotal: num(r.mind_people_total),
+    peopleWeek: num(r.mind_people_7d),
+    practices,
+    daily: numList(r.mind_daily, 14),
+  };
+}
 
 export function parseLiveStats(raw: unknown): LiveStats | null {
   if (!raw || typeof raw !== "object") return null;
@@ -69,6 +108,7 @@ export function parseLiveStats(raw: unknown): LiveStats | null {
     challengesTotal: num(r.challenges_total),
     challengesActive: num(r.challenges_active),
     challengesWeek: num(r.challenges_7d),
+    mind: parseMind(r),
     generatedAt: typeof r.generated_at === "string" ? r.generated_at : new Date().toISOString(),
   };
 }
