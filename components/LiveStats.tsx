@@ -554,6 +554,7 @@ function ChallengesWidget({ s, on }: { s: Stats; on: boolean }) {
   const r = 34;
   const c = 2 * Math.PI * r;
   const share = s.challengesTotal > 0 ? s.challengesActive / s.challengesTotal : 0;
+  const pop = s.popularChallenge;
   return (
     <Widget index={4} label="Challenges created" icon={Icon.trophy} className="lg:col-span-2">
       <div className="flex items-start justify-between gap-4">
@@ -600,10 +601,55 @@ function ChallengesWidget({ s, on }: { s: Stats; on: boolean }) {
         </div>
       </div>
       <div className="mt-auto pt-6">
-        <p className="text-sm text-white/70">
-          <span className="font-bold text-white">{fmt(s.challengesActive)}</span> active this week
+        <p className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-sm text-white/70">
+          <span>
+            <span className="font-bold text-white">{fmt(s.challengesActive)}</span> active this week
+          </span>
+          {pop && (
+            <a
+                href={pop.joinUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={`Join ${pop.title} in the MONA app`}
+                className="group/join inline-flex items-center gap-1.5 rounded-sm font-semibold text-accent focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+                data-testid="popular-challenge-link"
+              >
+                <svg viewBox="0 0 24 24" fill="none" className="h-[18px] w-[18px] shrink-0" aria-hidden>
+                  <path
+                    d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                <span className="underline decoration-accent/40 decoration-2 underline-offset-4 transition-colors group-hover/join:decoration-accent">
+                  Join {pop.title}
+                </span>
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  className="h-4 w-4 shrink-0 transition-transform duration-300 group-hover/join:translate-x-0.5 group-hover/join:-translate-y-0.5"
+                  aria-hidden
+                >
+                  <path d="M7 17 17 7M9 7h8v8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+            </a>
+          )}
         </p>
-        <p className="mt-1 text-xs text-white/45">Push-ups, squats, sit-ups, lunges and runs — with friends</p>
+        <p className="mt-1.5 text-xs text-white/45">
+          {pop ? (
+            <>
+              <span className="whitespace-nowrap">Most popular</span> ·{" "}
+              <span className="whitespace-nowrap">{pop.goal}</span> ·{" "}
+              <span className="whitespace-nowrap">
+                {fmt(pop.participants)} {pop.participants === 1 ? "person" : "people"} in
+              </span>
+            </>
+          ) : (
+            "Push-ups, squats, sit-ups, lunges and runs — with friends"
+          )}
+        </p>
       </div>
     </Widget>
   );

@@ -11,6 +11,10 @@ const SUPABASE_KEY =
   process.env.MONA_SUPABASE_PUBLISHABLE_KEY ??
   "sb_publishable_QHrDOUMsqJjc1DUO9W11Rw_LB_viaII";
 
+/** The MONA web app — its /join/<code> page signs people in (or up) and
+ *  joins them to the challenge. */
+const APP_URL = (process.env.MONA_APP_URL ?? "https://move-nation-ai.lovable.app").replace(/\/+$/, "");
+
 export type LiveStats = {
   usersTotal: number;
   usersWeek: number;
@@ -34,10 +38,21 @@ export type LiveStats = {
   challengesTotal: number;
   challengesActive: number;
   challengesWeek: number;
+  /** The open challenge (made by MONA) most people have joined, with a link
+   *  that joins it. Null when there's none (or an older database). */
+  popularChallenge: PopularChallenge | null;
   /** Breathing sessions in the app's Mind tab. Null until the database
    *  sends Mind totals (older version) — the Mind widget then stays hidden. */
   mind: MindStats | null;
   generatedAt: string;
+};
+
+export type PopularChallenge = {
+  title: string;
+  /** "30 km a month", "40 lunges a day". */
+  goal: string;
+  participants: number;
+  joinUrl: string;
 };
 
 export type MindPractice = { id: string; minutes: number; sessions: number };
@@ -85,6 +100,38 @@ function parseMind(r: Record<string, unknown>): MindStats | null {
   };
 }
 
+const NOUN: Record<string, string> = {
+  pushups: "push-ups",
+  squats: "squats",
+  situps: "sit-ups",
+  lunges: "lunges",
+  pullups: "pull-ups",
+};
+
+function parsePopular(v: unknown): PopularChallenge | null {
+  if (!v || typeof v !== "object") return null;
+  const p = v as Record<string, unknown>;
+  const title = typeof p.title === "string" ? p.title.trim() : "";
+  const code = typeof p.invite_code === "string" ? p.invite_code.trim() : "";
+  // Invite codes are short letters and digits; anything else isn't linked.
+  if (!title || !/^[a-z0-9]{4,40}$/i.test(code)) return null;
+  const type = typeof p.challenge_type === "string" ? p.challenge_type : "";
+  const km = num(p.distance_target_km);
+  const daily = num(p.daily_target);
+  const goal =
+    type === "run"
+      ? km > 0
+        ? `${km.toLocaleString("en-US")} km a month`
+        : "Running"
+      : `${(daily || 50).toLocaleString("en-US")} ${NOUN[type] ?? "reps"} a day`;
+  return {
+    title: title.slice(0, 80),
+    goal,
+    participants: num(p.participants),
+    joinUrl: `${APP_URL}/join/${encodeURIComponent(code)}`,
+  };
+}
+
 export function parseLiveStats(raw: unknown): LiveStats | null {
   if (!raw || typeof raw !== "object") return null;
   const r = raw as Record<string, unknown>;
@@ -108,6 +155,7 @@ export function parseLiveStats(raw: unknown): LiveStats | null {
     challengesTotal: num(r.challenges_total),
     challengesActive: num(r.challenges_active),
     challengesWeek: num(r.challenges_7d),
+    popularChallenge: parsePopular(r.popular_challenge),
     mind: parseMind(r),
     generatedAt: typeof r.generated_at === "string" ? r.generated_at : new Date().toISOString(),
   };
