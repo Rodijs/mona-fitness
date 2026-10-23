@@ -614,15 +614,6 @@ function ChallengesWidget({ s, on }: { s: Stats; on: boolean }) {
                 className="group/join inline-flex items-center gap-1.5 rounded-sm font-semibold text-accent focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
                 data-testid="popular-challenge-link"
               >
-                <svg viewBox="0 0 24 24" fill="none" className="h-[18px] w-[18px] shrink-0" aria-hidden>
-                  <path
-                    d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z"
-                    stroke="currentColor"
-                    strokeWidth="1.8"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
                 <span className="underline decoration-accent/40 decoration-2 underline-offset-4 transition-colors group-hover/join:decoration-accent">
                   Join {pop.title}
                 </span>
