@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
 import { Resend } from "resend";
-import { addSubscriber } from "@/lib/waitlist";
+import { addSubscriber, allowSignupAttempt } from "@/lib/waitlist";
 
 // Route Handler is not cached — every POST runs fresh, which is what we
 // want for a mutation like this.
@@ -62,7 +62,20 @@ async function sendNotificationEmail(subscriberEmail: string) {
   }
 }
 
+/** The visitor's IP as Vercel reports it (first entry of x-forwarded-for). */
+function clientIp(request: Request): string {
+  const forwarded = request.headers.get("x-forwarded-for") ?? "";
+  return (forwarded.split(",")[0] || request.headers.get("x-real-ip") || "").trim();
+}
+
 export async function POST(request: Request) {
+  if (!(await allowSignupAttempt(clientIp(request)))) {
+    return NextResponse.json(
+      { error: "Too many tries. Please wait a bit and try again." },
+      { status: 429 },
+    );
+  }
+
   let body: unknown;
   try {
     body = await request.json();
@@ -75,7 +88,7 @@ export async function POST(request: Request) {
       ? String((body as { email?: unknown }).email ?? "").trim().toLowerCase()
       : "";
 
-  if (!email || !EMAIL_RE.test(email)) {
+  if (!email || email.length > 254 || !EMAIL_RE.test(email)) {
     return NextResponse.json({ error: "Enter a valid email address." }, { status: 400 });
   }
 

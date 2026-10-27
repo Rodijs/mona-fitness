@@ -65,3 +65,24 @@ export async function getSubscriberCount(): Promise<number | null> {
     return null;
   }
 }
+
+// Sign-up attempts allowed from one visitor (IP) per hour. Stops bots from
+// filling the waitlist and the signup-notification inbox. If Redis isn't
+// available the request is let through (local dev, or an outage).
+const SIGNUPS_PER_HOUR = 5;
+
+export async function allowSignupAttempt(ip: string): Promise<boolean> {
+  const pending = getClient();
+  if (!pending || !ip) return true;
+
+  try {
+    const client = await pending;
+    const key = `mona:signup-rate:${ip}`;
+    const tries = await client.incr(key);
+    if (tries === 1) await client.expire(key, 60 * 60);
+    return tries <= SIGNUPS_PER_HOUR;
+  } catch (err) {
+    console.error("Redis allowSignupAttempt failed:", err);
+    return true;
+  }
+}
