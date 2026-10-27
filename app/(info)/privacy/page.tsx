@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import Footer from "@/components/Footer";
 import PageTitle from "@/components/PageTitle";
-import SubpageHeader from "@/components/SubpageHeader";
+import PolicyContents from "@/components/PolicyContents";
 import {
   PRIVACY_CONTACT,
   PRIVACY_UPDATED,
@@ -62,11 +61,11 @@ function Block({ b }: { b: PolicyBlock }) {
   );
 }
 
+const CONTENTS = SECTIONS.map((s) => ({ id: s.id, title: s.title }));
+
 export default function PrivacyPage() {
   return (
     <>
-      <SubpageHeader />
-
       <main className="flex-1 px-5 pb-20 pt-10 sm:px-8 sm:pt-16">
         <div className="mx-auto max-w-6xl">
           <PageTitle
@@ -84,18 +83,7 @@ export default function PrivacyPage() {
                 <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">
                   Contents
                 </p>
-                <ol className="mt-4 space-y-1 border-l border-border">
-                  {SECTIONS.map((s, i) => (
-                    <li key={s.id}>
-                      <a
-                        href={`#${s.id}`}
-                        className="-ml-px block border-l border-transparent py-1.5 pl-4 text-sm text-white/60 transition-colors hover:border-accent hover:text-white"
-                      >
-                        <span className="tabular-nums text-white/35">{i + 1}.</span> {s.title}
-                      </a>
-                    </li>
-                  ))}
-                </ol>
+                <PolicyContents items={CONTENTS} variant="list" />
               </div>
             </nav>
 
@@ -120,21 +108,17 @@ export default function PrivacyPage() {
                 </ul>
               </section>
 
-              {/* Contents on phones and tablets: tap a chip to jump. */}
-              <nav aria-label="Contents" className="mt-8 flex flex-wrap gap-2 lg:hidden">
-                {SECTIONS.map((s, i) => (
-                  <a
-                    key={s.id}
-                    href={`#${s.id}`}
-                    className="rounded-full border border-border bg-surface px-3 py-1.5 text-xs font-medium text-white/70 transition-colors hover:border-accent/50 hover:text-accent"
-                  >
-                    {i + 1}. {s.title}
-                  </a>
-                ))}
+              {/* Contents on phones and tablets: a slider that sticks to the top
+                  while you read, with the current section in bold lime. */}
+              <nav
+                aria-label="Contents"
+                className="sticky top-0 z-30 -mx-5 mt-8 border-y border-border bg-background/85 backdrop-blur-md sm:-mx-8 lg:hidden"
+              >
+                <PolicyContents items={CONTENTS} variant="bar" />
               </nav>
 
               {SECTIONS.map((s, i) => (
-                <section key={s.id} id={s.id} className="mt-12 scroll-mt-8">
+                <section key={s.id} id={s.id} className="mt-12 scroll-mt-24 lg:scroll-mt-8">
                   <h2 className="text-xl font-bold tracking-tight text-white sm:text-2xl">
                     <span className="tabular-nums text-white/35">{i + 1}.</span> {s.title}
                   </h2>
@@ -166,8 +150,6 @@ export default function PrivacyPage() {
           </div>
         </div>
       </main>
-
-      <Footer />
     </>
   );
 }

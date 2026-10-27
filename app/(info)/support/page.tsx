@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Footer from "@/components/Footer";
 import PageTitle from "@/components/PageTitle";
-import SubpageHeader from "@/components/SubpageHeader";
 import { PRIVACY_URL, SUPPORT_EMAIL } from "@/lib/contact";
 
 // mona.fitness/support — the App Store "Support URL": how to reach us, plus
@@ -35,8 +33,6 @@ const FAQ: { q: string; a: string }[] = [
 export default function SupportPage() {
   return (
     <>
-      <SubpageHeader />
-
       <main className="flex-1 px-5 pb-20 pt-10 sm:px-8 sm:pt-16">
         <div className="mx-auto max-w-2xl">
           <PageTitle pill="Help & contact" plain="MONA" accent="Support">
@@ -84,8 +80,6 @@ export default function SupportPage() {
           </p>
         </div>
       </main>
-
-      <Footer />
     </>
   );
 }
