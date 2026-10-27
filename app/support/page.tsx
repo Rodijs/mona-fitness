@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Logo from "@/components/Logo";
 import Footer from "@/components/Footer";
+import PageTitle from "@/components/PageTitle";
+import SubpageHeader from "@/components/SubpageHeader";
 import { PRIVACY_URL, SUPPORT_EMAIL } from "@/lib/contact";
 
 // mona.fitness/support — the App Store "Support URL": how to reach us, plus
@@ -34,20 +35,13 @@ const FAQ: { q: string; a: string }[] = [
 export default function SupportPage() {
   return (
     <>
-      <header className="px-4 py-4 sm:px-6">
-        <div className="mx-auto max-w-6xl">
-          <Link href="/" aria-label="MONA home" className="inline-flex items-center text-white">
-            <Logo className="h-12 w-auto sm:h-14" />
-          </Link>
-        </div>
-      </header>
+      <SubpageHeader />
 
       <main className="flex-1 px-5 pb-20 pt-10 sm:px-8 sm:pt-16">
         <div className="mx-auto max-w-2xl">
-          <h1 className="font-serif text-4xl font-semibold italic sm:text-5xl">Support</h1>
-          <p className="mt-4 text-lg text-muted">
+          <PageTitle pill="Help & contact" plain="MONA" accent="Support">
             Questions, problems or ideas? Write to us, a real person reads every email.
-          </p>
+          </PageTitle>
 
           <a
             href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent("MONA support")}`}
@@ -60,7 +54,7 @@ export default function SupportPage() {
             {SUPPORT_EMAIL}
           </a>
 
-          <h2 className="mt-16 text-xl font-semibold">Common questions</h2>
+          <h2 className="mt-16 text-xl font-bold tracking-tight text-white">Common questions</h2>
           <div className="mt-6 divide-y divide-border rounded-3xl border border-border bg-surface">
             {FAQ.map((item) => (
               <details key={item.q} className="group px-6 py-5">
@@ -80,12 +74,12 @@ export default function SupportPage() {
 
           <p className="mt-10 text-sm text-muted">
             Read how MONA handles your data in our{" "}
-            <a
+            <Link
               href={PRIVACY_URL}
               className="text-foreground underline underline-offset-4 hover:text-accent"
             >
               privacy policy
-            </a>
+            </Link>
             .
           </p>
         </div>

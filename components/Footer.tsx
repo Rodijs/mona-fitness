@@ -43,9 +43,9 @@ export default function Footer() {
             <Link href="/support" className="transition-colors hover:text-accent">
               Support
             </Link>
-            <a href={PRIVACY_URL} className="transition-colors hover:text-accent">
+            <Link href={PRIVACY_URL} className="transition-colors hover:text-accent">
               Privacy
-            </a>
+            </Link>
             <a href={`mailto:${SUPPORT_EMAIL}`} className="transition-colors hover:text-accent">
               {SUPPORT_EMAIL}
             </a>

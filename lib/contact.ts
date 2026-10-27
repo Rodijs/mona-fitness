@@ -3,5 +3,5 @@
 // (ImprovMX); signup notifications still go to the private address in
 // app/api/subscribe/route.ts.
 export const SUPPORT_EMAIL = "hello@mona.fitness";
-/** MONA's privacy policy (served by the app). */
-export const PRIVACY_URL = "https://move-nation-ai.lovable.app/privacy";
+/** MONA's privacy policy page on this site (same text as in the app). */
+export const PRIVACY_URL = "/privacy";
