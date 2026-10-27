@@ -1,4 +1,6 @@
+import Link from "next/link";
 import Logo from "./Logo";
+import { PRIVACY_URL, SUPPORT_EMAIL } from "@/lib/contact";
 
 const SOCIALS = [
   {
@@ -35,7 +37,20 @@ export default function Footer() {
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-5 text-sm text-muted sm:flex-row">
         <Logo className="h-10 w-auto" />
 
-        <p>&copy; {new Date().getFullYear()} Mona Fitness. All rights reserved.</p>
+        <div className="flex flex-col items-center gap-2 sm:items-start">
+          <p>&copy; {new Date().getFullYear()} Mona Fitness. All rights reserved.</p>
+          <nav aria-label="Footer" className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
+            <Link href="/support" className="transition-colors hover:text-accent">
+              Support
+            </Link>
+            <a href={PRIVACY_URL} className="transition-colors hover:text-accent">
+              Privacy
+            </a>
+            <a href={`mailto:${SUPPORT_EMAIL}`} className="transition-colors hover:text-accent">
+              {SUPPORT_EMAIL}
+            </a>
+          </nav>
+        </div>
 
         <div className="flex items-center gap-3">
           {SOCIALS.map((social) => (
