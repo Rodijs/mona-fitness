@@ -23,7 +23,7 @@ export default function Story() {
     <section
       id="story"
       // On wide screens the menu link lands with the card right under the menu.
-      className="scroll-mt-20 px-2 py-12 sm:px-3 sm:py-16 lg:scroll-mt-[-40px]"
+      className="scroll-mt-20 px-2 pt-12 sm:px-3 sm:pt-16 lg:scroll-mt-[-40px]"
       aria-labelledby="story-title"
     >
       <div className="relative overflow-hidden rounded-[28px] bg-[#111b22] sm:rounded-[44px]">

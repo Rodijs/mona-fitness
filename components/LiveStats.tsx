@@ -1039,7 +1039,7 @@ export default function LiveStats() {
   if (failed && !data) return null;
 
   return (
-    <section id="live-stats" ref={ref} className="relative overflow-hidden px-5 py-24 sm:px-8" aria-labelledby="live-stats-title">
+    <section id="live-stats" ref={ref} className="relative scroll-mt-8 overflow-hidden px-5 pb-24 pt-16 sm:px-8 sm:pt-20" aria-labelledby="live-stats-title">
       <div aria-hidden className="pointer-events-none absolute left-1/2 top-10 h-[420px] w-[820px] max-w-[140vw] -translate-x-1/2 rounded-full bg-accent/[0.07] blur-[120px]" />
       <div className="relative z-10 mx-auto max-w-6xl">
         <motion.div
