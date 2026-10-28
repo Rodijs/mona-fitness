@@ -24,16 +24,17 @@ export default function Story() {
       id="story"
       // On wide screens the menu link lands just above the person, with the
       // card in view, rather than on the empty top of the photo.
-      className="scroll-mt-20 px-2 py-12 sm:px-3 sm:py-16 lg:scroll-mt-[-110px]"
+      className="scroll-mt-20 px-2 py-12 sm:px-3 sm:py-16 lg:scroll-mt-[-40px]"
       aria-labelledby="story-title"
     >
       <div className="relative overflow-hidden rounded-[28px] bg-[#0b0d0f] sm:rounded-[44px]">
         {/* The photo fills the top of the frame and runs on under the card,
-            fading into the dark. The person stays in view just above the card.
-            It gently settles in as it scrolls into view. */}
+            fading into the dark. Wider screens show the whole photo, moved up
+            so the empty mist and the lamp go off the top and the person sits
+            just above the card. It gently settles in as it scrolls into view. */}
         <motion.div
           aria-hidden
-          className="absolute inset-x-0 top-0 h-[80vw] origin-top lg:h-[min(62vw,640px)]"
+          className="absolute inset-x-0 top-[-18vw] h-[80vw] origin-top sm:top-[-20vw] sm:aspect-[1672/941] sm:h-auto"
           initial={reduce ? false : { scale: 1.1 }}
           whileInView={{ scale: 1 }}
           viewport={{ once: true }}
@@ -44,7 +45,7 @@ export default function Story() {
             alt=""
             fill
             sizes="100vw"
-            className="object-cover object-[60%_30%]"
+            className="object-cover object-[60%_30%] sm:object-center"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-transparent from-60% to-[#0b0d0f]" />
         </motion.div>
@@ -54,7 +55,7 @@ export default function Story() {
           className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_30%,transparent_35%,rgba(0,0,0,0.45)_85%)]"
         />
 
-        <div className="relative flex justify-center px-3 pb-10 pt-[56vw] sm:px-6 sm:pb-12 lg:px-10 lg:pb-14 lg:pt-[min(46vw,470px)]">
+        <div className="relative flex justify-center px-3 pb-10 pt-[38vw] sm:px-6 sm:pb-12 sm:pt-[16.5vw] lg:px-10 lg:pb-14">
           <motion.article
             {...fadeUp}
             transition={{ duration: 0.6 }}
