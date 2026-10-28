@@ -23,10 +23,10 @@ export default function Story() {
     <section
       id="story"
       // On wide screens the menu link lands with the card right under the menu.
-      className="scroll-mt-20 px-5 pt-12 sm:px-8 sm:pt-16 lg:scroll-mt-[-40px]"
+      className="scroll-mt-20 px-2 pt-12 sm:px-3 sm:pt-16 lg:scroll-mt-[-40px]"
       aria-labelledby="story-title"
     >
-      <div className="relative mx-auto max-w-6xl overflow-hidden rounded-3xl bg-[#111b22]">
+      <div className="relative overflow-hidden rounded-[28px] bg-[#111b22] sm:rounded-[44px]">
         {/* A misty studio with a soft light in the middle and one person doing
             push-ups on the floor, bottom right. Wide screens: the photo fills
             the whole frame, the card floats in the light and the person is
@@ -50,11 +50,11 @@ export default function Story() {
           <div className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-[#111b22] to-transparent lg:hidden" />
         </motion.div>
 
-        <div className="relative flex justify-center px-3 pb-[28vw] pt-8 sm:px-6 sm:pb-[26vw] sm:pt-12 lg:px-10 lg:pb-[220px] lg:pt-[72px]">
+        <div className="relative flex justify-center px-3 pb-[28vw] pt-8 sm:px-5 sm:pb-[26vw] sm:pt-12 lg:pb-[max(220px,11vw)] lg:pt-[6.5vw]">
           <motion.article
             {...fadeUp}
             transition={{ duration: 0.6 }}
-            className="lime-stroke relative w-full max-w-4xl rounded-[22px] bg-[rgba(11,13,15,0.78)] px-5 py-9 backdrop-blur-[14px] sm:px-10 sm:py-12 lg:px-14"
+            className="lime-stroke relative w-full max-w-6xl rounded-[28px] bg-[rgba(11,13,15,0.78)] px-5 py-9 backdrop-blur-[14px] sm:rounded-[36px] sm:px-10 sm:py-12 lg:px-14"
           >
             <div className="text-center">
               <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-xs font-semibold text-white/80">
