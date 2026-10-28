@@ -7,7 +7,7 @@
 
 import { SUPPORT_EMAIL } from "./contact";
 
-export const PRIVACY_VERSION = "1.13";
+export const PRIVACY_VERSION = "1.14";
 export const PRIVACY_UPDATED = "28 October 2026";
 export const PRIVACY_CONTACT = SUPPORT_EMAIL;
 
@@ -32,7 +32,7 @@ export const SECTIONS: PolicySection[] = [
     body: [
       {
         t: "p",
-        text: 'MONA (short for "Movement Nation") is a fitness app run by Rodijs Razmus, a private person based in Latvia (European Union). He is responsible for your data under the EU General Data Protection Regulation (GDPR) — the "controller" in legal terms. In this policy "we" and "us" means MONA.',
+        text: 'MONA (short for "Movement Nation") is a fitness app run by Rod (Rodijs Razmus), a private person based in Latvia (European Union). He is responsible for your data under the EU General Data Protection Regulation (GDPR) — the "controller" in legal terms. In this policy "we" and "us" means MONA.',
       },
       { t: "p", text: "Questions, requests or worries about your data: write to {email}." },
     ],
@@ -186,7 +186,7 @@ export const SECTIONS: PolicySection[] = [
     body: [
       {
         t: "p",
-        text: "Rodijs, who runs MONA, can see account and activity data in a private admin tool that only he can sign in to: your name, email, sign-in method, when you joined and last signed in, your challenges, your workout and run totals with their dates and times, how many moves the rep counter didn't count, your breathing sessions in Mind (practice, length and time), quotes you liked, your suggestions and feedback, reports you send or that are made about you, and the answer you give if you delete your account. He uses it to run and improve the app, help you when you ask, and stop abuse.",
+        text: "Rod, who runs MONA, can see account and activity data in a private admin tool that only he can sign in to: your name, email, sign-in method, when you joined and last signed in, your challenges, your workout and run totals with their dates and times, how many moves the rep counter didn't count, your breathing sessions in Mind (practice, length and time), quotes you liked, your suggestions and feedback, reports you send or that are made about you, and the answer you give if you delete your account. He uses it to run and improve the app, help you when you ask, and stop abuse.",
       },
       {
         t: "list",
