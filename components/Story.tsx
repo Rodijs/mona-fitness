@@ -20,14 +20,20 @@ export default function Story() {
   const reduce = useReducedMotion();
 
   return (
-    <section id="story" className="scroll-mt-20 px-2 py-12 sm:px-3 sm:py-16" aria-labelledby="story-title">
+    <section
+      id="story"
+      // On wide screens the menu link lands just above the person, with the
+      // card in view, rather than on the empty top of the photo.
+      className="scroll-mt-20 px-2 py-12 sm:px-3 sm:py-16 lg:scroll-mt-[-110px]"
+      aria-labelledby="story-title"
+    >
       <div className="relative overflow-hidden rounded-[28px] bg-[#0b0d0f] sm:rounded-[44px]">
-        {/* The photo fills the top of the frame (the person stays in view above
-            the card) and fades into the dark below. It gently settles in as it
-            scrolls into view. */}
+        {/* The photo fills the top of the frame and runs on under the card,
+            fading into the dark. The person stays in view just above the card.
+            It gently settles in as it scrolls into view. */}
         <motion.div
           aria-hidden
-          className="absolute inset-x-0 top-0 h-[80vw] max-h-[860px] origin-top"
+          className="absolute inset-x-0 top-0 h-[80vw] origin-top lg:h-[min(62vw,640px)]"
           initial={reduce ? false : { scale: 1.1 }}
           whileInView={{ scale: 1 }}
           viewport={{ once: true }}
@@ -38,9 +44,9 @@ export default function Story() {
             alt=""
             fill
             sizes="100vw"
-            className="object-cover object-[60%_50%]"
+            className="object-cover object-[60%_30%]"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent from-55% to-[#0b0d0f]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent from-60% to-[#0b0d0f]" />
         </motion.div>
         {/* Darken the edges so the card and text stay easy to read. */}
         <div
@@ -48,11 +54,11 @@ export default function Story() {
           className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_30%,transparent_35%,rgba(0,0,0,0.45)_85%)]"
         />
 
-        <div className="relative flex justify-center px-3 pb-12 pt-[60vw] sm:px-6 sm:pb-16 lg:px-10 lg:pb-20 lg:pt-[min(58vw,660px)]">
+        <div className="relative flex justify-center px-3 pb-10 pt-[56vw] sm:px-6 sm:pb-12 lg:px-10 lg:pb-14 lg:pt-[min(46vw,470px)]">
           <motion.article
             {...fadeUp}
             transition={{ duration: 0.6 }}
-            className="glass lime-stroke relative w-full max-w-6xl rounded-[28px] px-5 py-10 sm:rounded-[36px] sm:px-10 sm:py-14 lg:px-16 lg:py-16"
+            className="lime-stroke relative w-full max-w-6xl rounded-[28px] bg-[rgba(11,13,15,0.6)] px-5 py-9 backdrop-blur-[14px] sm:rounded-[36px] sm:px-10 sm:py-12 lg:px-14"
           >
             <div className="text-center">
               <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-xs font-semibold text-white/80">
@@ -67,9 +73,9 @@ export default function Story() {
               </h2>
             </div>
 
-            {/* One column on phones; on wide screens the intro sits beside the
-                quote and the rest of the story. */}
-            <div className="mt-10 grid gap-9 lg:mt-14 lg:grid-cols-2 lg:gap-14">
+            {/* Phones: one column. Wide screens: the intro beside the quote,
+                then the rest of the story in two columns. */}
+            <div className="mt-9 grid items-center gap-8 lg:mt-12 lg:grid-cols-2 lg:gap-12">
               <div>
                 <div className="flex items-center gap-3">
                   <motion.span
@@ -99,41 +105,38 @@ export default function Story() {
                   </p>
                 </div>
               </div>
-
-              <div>
-                <motion.figure
-                  {...fadeUp}
-                  transition={{ duration: 0.6, delay: reduce ? 0 : 0.1 }}
-                  className="relative overflow-hidden rounded-[24px] bg-accent p-7 text-background shadow-[0_24px_60px_-28px_rgba(200,255,61,0.55)] sm:p-9"
+              <motion.figure
+                {...fadeUp}
+                transition={{ duration: 0.6, delay: reduce ? 0 : 0.1 }}
+                className="relative overflow-hidden rounded-[24px] bg-accent p-7 text-background shadow-[0_24px_60px_-28px_rgba(200,255,61,0.55)] sm:p-9"
+              >
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute -top-7 right-4 font-serif text-[140px] leading-none opacity-15"
                 >
-                  <span
-                    aria-hidden
-                    className="pointer-events-none absolute -top-7 right-4 font-serif text-[140px] leading-none opacity-15"
-                  >
-                    &ldquo;
-                  </span>
-                  <blockquote className="relative text-xl font-extrabold leading-snug tracking-tight sm:text-2xl">
-                    What if moving every day was as easy, and as fun, as sending a message to a
-                    friend?
-                  </blockquote>
-                </motion.figure>
-
-                <div className="mt-8 space-y-4 text-white/75">
-                  <p>
-                    That question became MONA. Prop your phone up, do your push-ups, squats or
-                    lunges, and the camera counts every rep, no gadgets, no gym. Then see how your
-                    friends are doing and keep the streak alive together.
-                  </p>
-                  <p>
-                    Many of the best ideas came at the end of long days, some of them while putting
-                    my youngest daughter to sleep. MONA is built in those quiet hours, one small step
-                    at a time. Just like the habit it&apos;s meant to help you build.
-                  </p>
-                </div>
-              </div>
+                  &ldquo;
+                </span>
+                <blockquote className="relative text-xl font-extrabold leading-snug tracking-tight sm:text-2xl">
+                  What if moving every day was as easy, and as fun, as sending a message to a
+                  friend?
+                </blockquote>
+              </motion.figure>
             </div>
 
-            <p className="mt-12 border-t border-white/10 pt-8 text-center text-xl font-extrabold tracking-tight text-white sm:text-2xl">
+            <div className="mt-8 grid gap-4 text-white/75 lg:mt-10 lg:grid-cols-2 lg:gap-12">
+              <p>
+                That question became MONA. Prop your phone up, do your push-ups, squats or
+                lunges, and the camera counts every rep, no gadgets, no gym. Then see how your
+                friends are doing and keep the streak alive together.
+              </p>
+              <p>
+                Many of the best ideas came at the end of long days, some of them while putting
+                my youngest daughter to sleep. MONA is built in those quiet hours, one small step
+                at a time. Just like the habit it&apos;s meant to help you build.
+              </p>
+            </div>
+
+            <p className="mt-9 border-t border-white/10 pt-7 text-center text-xl font-extrabold tracking-tight text-white sm:text-2xl">
               Thank you for moving with us.
             </p>
           </motion.article>
