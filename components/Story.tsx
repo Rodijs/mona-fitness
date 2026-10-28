@@ -6,7 +6,7 @@ import { motion, useReducedMotion } from "framer-motion";
 // "Our Story": who makes MONA and why. Same words as the app's Profile →
 // About → Our story (move-nation-ai: src/routes/our-story.tsx). Laid out like
 // the newsletter on altitudebev.com: a big rounded photo frame — a misty studio
-// with one person mid-push-up under a round light — with a wide frosted-glass
+// with one person mid-push-up on the floor — with a frosted-glass
 // card in the middle, ringed in a lime gradient.
 
 
@@ -22,44 +22,39 @@ export default function Story() {
   return (
     <section
       id="story"
-      // On wide screens the menu link lands just above the person, with the
-      // card in view, rather than on the empty top of the photo.
+      // On wide screens the menu link lands with the card right under the menu.
       className="scroll-mt-20 px-2 py-12 sm:px-3 sm:py-16 lg:scroll-mt-[-40px]"
       aria-labelledby="story-title"
     >
-      <div className="relative overflow-hidden rounded-[28px] bg-[#0b0d0f] sm:rounded-[44px]">
-        {/* The photo fills the top of the frame and runs on under the card,
-            fading into the dark. Wider screens show the whole photo, moved up
-            so the empty mist and the lamp go off the top and the person sits
-            just above the card. It gently settles in as it scrolls into view. */}
+      <div className="relative overflow-hidden rounded-[28px] bg-[#111b22] sm:rounded-[44px]">
+        {/* A misty studio with a soft light in the middle and one person doing
+            push-ups on the floor, bottom right. Wide screens: the photo fills
+            the whole frame, the card floats in the light and the person is
+            just below its corner. Phones and tablets: the photo sits at the
+            bottom, its top fading into the dark. It settles in on scroll. */}
         <motion.div
           aria-hidden
-          className="absolute inset-x-0 top-[-18vw] h-[80vw] origin-top sm:top-[-20vw] sm:aspect-[1672/941] sm:h-auto"
-          initial={reduce ? false : { scale: 1.1 }}
+          className="absolute inset-x-0 bottom-0 h-[120vw] origin-bottom lg:top-0 lg:h-auto"
+          initial={reduce ? false : { scale: 1.08 }}
           whileInView={{ scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
         >
           <Image
-            src="/story/studio-pushup-side.jpg"
+            src="/story/studio-floor.jpg"
             alt=""
             fill
             sizes="100vw"
-            className="object-cover object-[88%_30%] sm:object-center"
+            className="object-cover object-[88%_100%] lg:object-[85%_100%]"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent from-60% to-[#0b0d0f]" />
+          <div className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-[#111b22] to-transparent lg:hidden" />
         </motion.div>
-        {/* Darken the edges so the card and text stay easy to read. */}
-        <div
-          aria-hidden
-          className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_30%,transparent_35%,rgba(0,0,0,0.45)_85%)]"
-        />
 
-        <div className="relative flex justify-center px-3 pb-10 pt-[38vw] sm:px-6 sm:pb-12 sm:pt-[16.5vw] lg:px-10 lg:pb-14">
+        <div className="relative flex justify-center px-3 pb-[28vw] pt-8 sm:px-6 sm:pb-[26vw] sm:pt-12 lg:px-10 lg:pb-[max(220px,11vw)] lg:pt-[6.5vw]">
           <motion.article
             {...fadeUp}
             transition={{ duration: 0.6 }}
-            className="lime-stroke relative w-full max-w-6xl rounded-[28px] bg-[rgba(11,13,15,0.6)] px-5 py-9 backdrop-blur-[14px] sm:rounded-[36px] sm:px-10 sm:py-12 lg:px-14"
+            className="lime-stroke relative w-full max-w-5xl rounded-[28px] bg-[rgba(11,13,15,0.78)] px-5 py-9 backdrop-blur-[14px] sm:rounded-[36px] sm:px-10 sm:py-12 lg:px-14"
           >
             <div className="text-center">
               <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-xs font-semibold text-white/80">
