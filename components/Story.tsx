@@ -41,11 +41,11 @@ export default function Story() {
           transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
         >
           <Image
-            src="/story/studio-pushup.jpg"
+            src="/story/studio-pushup-side.jpg"
             alt=""
             fill
             sizes="100vw"
-            className="object-cover object-[60%_30%] sm:object-center"
+            className="object-cover object-[88%_30%] sm:object-center"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-transparent from-60% to-[#0b0d0f]" />
         </motion.div>
