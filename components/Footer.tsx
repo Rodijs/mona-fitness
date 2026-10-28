@@ -37,7 +37,7 @@ export default function Footer() {
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-5 text-sm text-muted sm:flex-row">
         <Logo className="h-10 w-auto" />
 
-        <div className="flex flex-col items-center gap-2 sm:items-start">
+        <div className="flex flex-col items-center gap-2 text-center">
           <nav aria-label="Footer" className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
             <Link href="/support" className="transition-colors hover:text-accent">
               Support
@@ -49,12 +49,12 @@ export default function Footer() {
               {SUPPORT_EMAIL}
             </a>
           </nav>
-          <p className="text-center sm:text-left">
+          <p>
             &copy; {new Date().getFullYear()} Mona Fitness. All rights reserved.
-            <span className="mx-2 hidden text-white/20 sm:inline" aria-hidden>
+            <span className="mx-2 hidden text-white/20 lg:inline" aria-hidden>
               ·
             </span>
-            <span className="block sm:inline">Made with care in Latvia 🇱🇻</span>
+            <span className="block lg:inline">Made with care in Latvia 🇱🇻</span>
           </p>
         </div>
 
