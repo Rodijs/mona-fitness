@@ -22,6 +22,7 @@
   --color-accent-2: var(--accent-2);
   --font-sans: var(--font-manrope);
   --font-serif: var(--font-playfair);
+  --font-mono: var(--font-dm-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 body {
@@ -63,6 +64,35 @@ html {
   from {
     opacity: 0;
   }
+}
+
+/* Frosted glass, like the menu pills and the story card. */
+.glass {
+  background-color: rgba(128, 128, 128, 0.22);
+  -webkit-backdrop-filter: blur(40px) saturate(140%);
+  backdrop-filter: blur(40px) saturate(140%);
+}
+
+/* A thin lime gradient ring on the element's edge (follows its rounded
+   corners). The element needs position: relative. */
+.lime-stroke::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: linear-gradient(
+    150deg,
+    rgba(200, 255, 61, 0.95) 0%,
+    rgba(200, 255, 61, 0.3) 30%,
+    rgba(200, 255, 61, 0.06) 55%,
+    rgba(200, 255, 61, 0.3) 80%,
+    rgba(200, 255, 61, 0.8) 100%
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  pointer-events: none;
 }
 
 /* Horizontal sliders that scroll by swipe, without a visible bar. */
