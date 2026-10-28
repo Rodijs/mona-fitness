@@ -5,13 +5,13 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion, type Variants } from "framer-motion";
 import Logo from "./Logo";
 import ScrambleText from "./ScrambleText";
-import { SUPPORT_EMAIL } from "@/lib/contact";
+import { PUSHUP_CHALLENGE_URL, SUPPORT_EMAIL } from "@/lib/contact";
 
 // The home page's menu, after altitudebev.com: three frosted-glass pills —
 // the logo, the section links in the middle, and a round lime-bolt button
-// that goes to the waitlist. Link labels "decode" themselves on hover, a lime
+// that opens the push-up challenge. Link labels "decode" themselves on hover, a lime
 // ring lights up around the links pill, and the section you're looking at is
-// lime. On phones and tablets a MENU pill (it scrambles into CLOSE) opens a
+// lime. The bolt opens the "First Push-ups" challenge in the app. On phones and tablets a MENU pill (it scrambles into CLOSE) opens a
 // full-screen menu whose big links rise in one after another.
 
 const LINKS = [
@@ -80,7 +80,7 @@ function NavLink({ href, label, active }: { href: string; label: string; active:
       onMouseEnter={() => setHovers((n) => n + 1)}
       onFocus={() => setHovers((n) => n + 1)}
       aria-current={active ? "location" : undefined}
-      className={`relative flex h-full items-center px-5 font-mono text-[13px] uppercase tracking-[0.08em] transition-colors xl:px-6 ${
+      className={`relative flex h-full items-center px-5 text-[13px] font-semibold uppercase tracking-[0.1em] transition-colors xl:px-6 ${
         active ? "text-accent" : "text-white/85 hover:text-white"
       }`}
     >
@@ -141,21 +141,11 @@ export default function Navbar() {
 
   const pill = "glass relative flex h-12 items-center rounded-full sm:h-14";
 
-  // The bolt button: back to the top and straight into the email field.
-  const joinWaitlist = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setMenuOpen(false);
-    window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
-    window.setTimeout(
-      () => document.querySelector<HTMLInputElement>('#top input[type="email"]')?.focus({ preventScroll: true }),
-      reduce ? 0 : 500,
-    );
-  };
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 p-3 sm:p-4">
+    <header className="fixed inset-x-0 top-0 z-50 px-3 pt-8 sm:px-4 sm:pt-9">
       <nav className="relative flex items-center justify-between gap-2">
-        <a href="#top" onClick={() => setMenuOpen(false)} aria-label="MONA, back to top" className={`${pill} px-4 text-white sm:px-5`}>
+        <a href="#top" onClick={() => setMenuOpen(false)} aria-label="MONA, back to top" className={`${pill} ml-2.5 px-4 text-white sm:px-5`}>
           <Logo className="h-8 w-auto sm:h-9" />
         </a>
 
@@ -168,21 +158,23 @@ export default function Navbar() {
           ))}
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="mr-2.5 flex items-center gap-2">
           <button
             type="button"
             aria-expanded={menuOpen}
             aria-controls="site-menu"
             onClick={() => setMenuOpen((v) => !v)}
-            className={`${pill} px-5 font-mono text-[13px] uppercase tracking-[0.08em] text-white lg:hidden`}
+            className={`${pill} px-5 text-[13px] font-semibold uppercase tracking-[0.1em] text-white lg:hidden`}
           >
             <ScrambleText text={menuOpen ? "Close" : "Menu"} trigger={menuOpen} />
           </button>
           <a
-            href="#top"
-            onClick={joinWaitlist}
-            aria-label="Join the waitlist"
-            title="Join the waitlist"
+            href={PUSHUP_CHALLENGE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => setMenuOpen(false)}
+            aria-label="Join the First Push-ups challenge in the MONA app"
+            title="Join the First Push-ups challenge"
             className="group relative hidden h-12 w-12 items-center justify-center rounded-full bg-accent text-background shadow-[0_0_30px_-6px_rgba(200,255,61,0.6)] transition-transform duration-300 hover:scale-105 sm:flex sm:h-14 sm:w-14"
           >
             <Bolt className="h-6 w-6 transition-transform duration-500 group-hover:-rotate-12" />
@@ -199,7 +191,7 @@ export default function Navbar() {
             initial="closed"
             animate="open"
             exit="closed"
-            className="fixed inset-0 -z-10 flex flex-col bg-background/95 px-6 pb-8 pt-28 backdrop-blur-2xl lg:hidden"
+            className="fixed inset-0 -z-10 flex flex-col bg-background/95 px-6 pb-8 pt-32 backdrop-blur-2xl lg:hidden"
           >
             <ul className="flex flex-1 flex-col items-center justify-center gap-3">
               {LINKS.map((l, i) => (
@@ -232,7 +224,7 @@ export default function Navbar() {
                     <Link
                       href={l.href}
                       onClick={() => setMenuOpen(false)}
-                      className="glass inline-flex h-10 items-center rounded-full px-4 font-mono text-[11px] uppercase tracking-[0.08em] text-white/85 transition-colors hover:text-accent"
+                      className="glass inline-flex h-10 items-center rounded-full px-4 text-[11px] font-semibold uppercase tracking-[0.1em] text-white/85 transition-colors hover:text-accent"
                     >
                       {l.label}
                     </Link>
@@ -240,7 +232,7 @@ export default function Navbar() {
                     <a
                       href={l.href}
                       {...(l.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                      className="glass inline-flex h-10 items-center rounded-full px-4 font-mono text-[11px] uppercase tracking-[0.08em] text-white/85 transition-colors hover:text-accent"
+                      className="glass inline-flex h-10 items-center rounded-full px-4 text-[11px] font-semibold uppercase tracking-[0.1em] text-white/85 transition-colors hover:text-accent"
                     >
                       {l.label}
                     </a>

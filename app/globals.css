@@ -22,7 +22,6 @@
   --color-accent-2: var(--accent-2);
   --font-sans: var(--font-manrope);
   --font-serif: var(--font-playfair);
-  --font-mono: var(--font-dm-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 body {

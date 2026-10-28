@@ -5,7 +5,8 @@ import { useEffect, useRef, useState } from "react";
 // Text that "decodes" itself: for a moment its letters turn into random
 // characters, then settle back left to right. Plays when `trigger` changes
 // (hover, or a new `text`), like the menu labels on altitudebev.com.
-// Monospace fonts keep the width steady while it plays. Off with Reduce Motion.
+// An invisible copy of the real text holds the width, so nothing around it
+// shifts while it plays. Off with Reduce Motion.
 
 const GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&*+=";
 const DURATION_MS = 420;
@@ -52,9 +53,14 @@ export default function ScrambleText({
   }, [text, trigger]);
 
   return (
-    <span className={className}>
+    <span className={`inline-grid ${className ?? ""}`}>
       <span className="sr-only">{text}</span>
-      <span aria-hidden>{shown}</span>
+      <span aria-hidden className="invisible col-start-1 row-start-1 whitespace-nowrap">
+        {text}
+      </span>
+      <span aria-hidden className="col-start-1 row-start-1 whitespace-nowrap">
+        {shown}
+      </span>
     </span>
   );
 }
