@@ -7,8 +7,8 @@
 
 import { SUPPORT_EMAIL } from "./contact";
 
-export const PRIVACY_VERSION = "1.12";
-export const PRIVACY_UPDATED = "27 October 2026";
+export const PRIVACY_VERSION = "1.13";
+export const PRIVACY_UPDATED = "28 October 2026";
 export const PRIVACY_CONTACT = SUPPORT_EMAIL;
 
 export type PolicyBlock =
@@ -32,7 +32,7 @@ export const SECTIONS: PolicySection[] = [
     body: [
       {
         t: "p",
-        text: 'MONA ("Move Every Day") is a fitness app run by Rodijs Razmus, a private person based in Latvia (European Union). He is responsible for your data under the EU General Data Protection Regulation (GDPR) — the "controller" in legal terms. In this policy "we" and "us" means MONA.',
+        text: 'MONA (short for "Movement Nation") is a fitness app run by Rodijs Razmus, a private person based in Latvia (European Union). He is responsible for your data under the EU General Data Protection Regulation (GDPR) — the "controller" in legal terms. In this policy "we" and "us" means MONA.',
       },
       { t: "p", text: "Questions, requests or worries about your data: write to {email}." },
     ],
