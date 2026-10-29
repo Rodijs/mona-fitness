@@ -7,8 +7,8 @@
 
 import { SUPPORT_EMAIL } from "./contact";
 
-export const PRIVACY_VERSION = "1.14";
-export const PRIVACY_UPDATED = "28 October 2026";
+export const PRIVACY_VERSION = "1.15";
+export const PRIVACY_UPDATED = "29 October 2026";
 export const PRIVACY_CONTACT = SUPPORT_EMAIL;
 
 export type PolicyBlock =
@@ -203,7 +203,7 @@ export const SECTIONS: PolicySection[] = [
     body: [
       {
         t: "p",
-        text: "To work quickly and offline, the app keeps some data in its storage on your phone: your workout and run history (including run routes), your profile details, settings (sound, reminders, units, theme, Quote of the day), streak freezes and rest days, favourites, your breathing sessions in Mind and how you said you felt before and after them (the feelings never leave the phone), quotes you've written, recipe votes, and your sign-in session.",
+        text: "To work quickly and offline, the app keeps some data in its storage on your phone: your workout and run history (including run routes), your profile details, settings (sound, reminders, units, theme, language, Quote of the day), streak freezes and rest days, favourites, your breathing sessions in Mind and how you said you felt before and after them (the feelings never leave the phone), quotes you've written, recipe votes, and your sign-in session.",
       },
       {
         t: "p",
@@ -225,7 +225,7 @@ export const SECTIONS: PolicySection[] = [
           "We don't sell, rent or trade your data.",
           "No ads and no advertising or tracking tools; we don't track you across other apps or websites.",
           "We don't use your data or anything from your camera to train AI models.",
-          "We don't set cookies. (Your sign-in is remembered in the app's own storage on your phone.)",
+          "We don't use tracking cookies. The app saves one small cookie on your phone with the language you chose (English or Latvian), so it opens in that language; it's never used to identify or track you. (Your sign-in is remembered in the app's own storage on your phone.)",
         ],
       },
     ],
