@@ -7,7 +7,7 @@
 
 import { SUPPORT_EMAIL } from "./contact";
 
-export const PRIVACY_VERSION = "1.16";
+export const PRIVACY_VERSION = "1.17";
 export const PRIVACY_UPDATED = "30 October 2026";
 export const PRIVACY_CONTACT = SUPPORT_EMAIL;
 
@@ -119,6 +119,10 @@ export const SECTIONS: PolicySection[] = [
       {
         t: "p",
         text: "Other members never see your email address. If you create a challenge, its invite link shows anyone who opens it — even without an account — the challenge name and settings, your name, and how many people have joined. A picture you add to a challenge is stored at a public web address so it can be shown in the app and in link previews.",
+      },
+      {
+        t: "p",
+        text: "The Paper: when a challenge ends — or, for MONA's open challenges, when each calendar month ends — the top 3 who actually took part (at least one rep or some distance) get The Paper, a diploma in Awards. It is saved in your account with the challenge name, your place, your counted total, workouts, active days, the dates and how many people took part, and you get a notification about it. Only you see your Papers; other members see the same leaderboard totals as before.",
       },
       {
         t: "p",
