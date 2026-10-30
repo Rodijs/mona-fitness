@@ -7,8 +7,8 @@
 
 import { SUPPORT_EMAIL } from "./contact";
 
-export const PRIVACY_VERSION = "1.15";
-export const PRIVACY_UPDATED = "29 October 2026";
+export const PRIVACY_VERSION = "1.16";
+export const PRIVACY_UPDATED = "30 October 2026";
 export const PRIVACY_CONTACT = SUPPORT_EMAIL;
 
 export type PolicyBlock =
@@ -164,7 +164,7 @@ export const SECTIONS: PolicySection[] = [
       {
         t: "p",
         lead: "Runs from your watch (iPhone app).",
-        text: "If you connect your watch in Profile → My devices (or on a Run challenge) and allow it, MONA reads the running workouts that your watch app (for example Garmin Connect, COROS, Polar, Suunto, Zepp or the Apple Watch) has saved in Apple Health: start time, duration, distance, average heart rate, active calories, indoor/outdoor and which app or watch recorded it. MONA also reads distance, heart rate and steps samples for this. These stay on your phone until you choose to add a run to a challenge; then that run's distance, time, date, average heart rate, calories and watch name are saved to your account like a run recorded in MONA, and its distance and time count on the challenge leaderboard. GPS routes from your watch are never read. MONA never writes to Apple Health.",
+        text: "If you connect your watch in Profile → My devices (or on a Run challenge) and allow it, MONA reads the running workouts that your watch app (for example Garmin Connect, COROS, Polar, Suunto, Zepp or the Apple Watch) has saved in Apple Health: start time, duration, distance, average heart rate, active calories, indoor/outdoor and which app or watch recorded it. MONA also reads that app's distance, heart rate and steps samples during each run, and — if you allow Workout Routes — the run's GPS route, to show a run's full summary (map, km splits, heart rate, cadence). These stay on your phone until you choose to add a run to a challenge; then that run's distance, time, date, average and maximum heart rate, cadence, calories, km splits, fastest km, top speed, climb and watch name are saved to your account like a run recorded in MONA, and its distance and time count on the challenge leaderboard. The route and the heart-rate curve stay on your phone and are never uploaded. MONA never writes to Apple Health.",
       },
       {
         t: "p",
