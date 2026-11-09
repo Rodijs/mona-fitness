@@ -106,7 +106,7 @@ export default function Story() {
                 >
                   &ldquo;
                 </span>
-                <blockquote className="relative text-xl font-extrabold leading-snug tracking-tight sm:text-2xl">
+                <blockquote className="relative text-balance text-lg font-extrabold leading-snug tracking-tight sm:text-xl lg:text-[22px]">
                   What if moving every day was as easy, and as fun, as sending a message to a
                   friend?
                 </blockquote>
@@ -115,9 +115,8 @@ export default function Story() {
 
             <div className="mt-8 grid gap-4 text-white/75 lg:mt-10 lg:grid-cols-2 lg:gap-12">
               <p>
-                That question became MONA. Prop your phone up, do your push-ups, squats or
-                lunges, and the camera counts every rep. No gadgets, no gym. Then see how your
-                friends are doing and keep the streak alive together.
+                That question became MONA. Prop up your phone, move, and the camera counts every
+                rep. Then keep the streak alive with friends.
               </p>
               <p>
                 Many of the best ideas came while putting my youngest daughter to sleep. MONA is
@@ -148,8 +147,9 @@ export default function Story() {
             </p>
 
             <div className="mt-9 flex flex-col items-center gap-5 border-t border-white/10 pt-8">
-              <p className="text-center text-xl font-extrabold tracking-tight text-white sm:text-2xl">
-                Thank you for moving with us.
+              {/* Same lettering as "Story" in the title, smaller. */}
+              <p className="text-center font-serif text-xl font-medium italic tracking-tight sm:text-2xl">
+                <span className="text-gradient">Thank you for moving with us.</span>
               </p>
               <motion.a
                 href={PUSHUP_CHALLENGE_URL}
