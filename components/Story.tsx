@@ -98,7 +98,7 @@ export default function Story() {
               <motion.figure
                 {...fadeUp}
                 transition={{ duration: 0.6, delay: reduce ? 0 : 0.1 }}
-                className="relative overflow-hidden rounded-[24px] bg-accent p-7 text-background shadow-[0_24px_60px_-28px_rgba(200,255,61,0.55)] sm:p-9"
+                className="relative overflow-hidden rounded-[24px] bg-accent px-7 py-6 text-background shadow-[0_24px_60px_-28px_rgba(200,255,61,0.55)] sm:px-9 sm:py-7"
               >
                 <span
                   aria-hidden
@@ -115,8 +115,9 @@ export default function Story() {
 
             <div className="mt-8 grid gap-4 text-white/75 lg:mt-10 lg:grid-cols-2 lg:gap-12">
               <p>
-                That question became MONA. Prop up your phone, move, and the camera counts every
-                rep. Then keep the streak alive with friends.
+                That question became MONA. Prop up your phone, do your push-ups, squats or lunges,
+                and the camera counts every rep. No gadgets, no gym. Then keep the streak alive
+                with friends.
               </p>
               <p>
                 Many of the best ideas came while putting my youngest daughter to sleep. MONA is
