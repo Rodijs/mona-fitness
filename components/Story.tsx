@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
+import { PUSHUP_CHALLENGE_URL } from "@/lib/contact";
 
 // "Our Story": who makes MONA and why. Same words as the app's Profile →
 // About → Our story (move-nation-ai: src/routes/our-story.tsx). Laid out like
@@ -88,18 +89,11 @@ export default function Story() {
                     Hi, I&apos;m Rod.
                   </h3>
                 </div>
-                <div className="mt-5 space-y-4 text-white/75">
-                  <p>
-                    I&apos;m a husband, a dad, and someone who believes that staying active should
-                    be part of everyday life. I train in my home gym and go for runs whenever I can
-                    find the time.
-                  </p>
-                  <p>
-                    Life is busy, especially with a family. But I still wanted to move, feel
-                    stronger, and make time for myself. I started looking for a simpler way to make
-                    movement part of everyday life.
-                  </p>
-                </div>
+                <p className="mt-5 text-white/75">
+                  I&apos;m a husband and a dad from Latvia. I train in my home gym and run whenever
+                  I find the time. Life with a family is busy, but I still wanted to move every day
+                  and feel stronger, so I went looking for a simpler way.
+                </p>
               </div>
               <motion.figure
                 {...fadeUp}
@@ -122,19 +116,54 @@ export default function Story() {
             <div className="mt-8 grid gap-4 text-white/75 lg:mt-10 lg:grid-cols-2 lg:gap-12">
               <p>
                 That question became MONA. Prop your phone up, do your push-ups, squats or
-                lunges, and the camera counts every rep, no gadgets, no gym. Then see how your
+                lunges, and the camera counts every rep. No gadgets, no gym. Then see how your
                 friends are doing and keep the streak alive together.
               </p>
               <p>
-                Many of the best ideas came at the end of long days, some of them while putting
-                my youngest daughter to sleep. MONA is built in those quiet hours, one small step
-                at a time. Just like the habit it&apos;s meant to help you build.
+                Many of the best ideas came while putting my youngest daughter to sleep. MONA is
+                built in those quiet hours, one small step at a time, just like the habit
+                it&apos;s meant to help you build.
               </p>
             </div>
 
-            <p className="mt-9 border-t border-white/10 pt-7 text-center text-xl font-extrabold tracking-tight text-white sm:text-2xl">
-              Thank you for moving with us.
+            {/* The camera is the big worry with an app like this: answer it here. */}
+            <p className="mx-auto mt-8 flex max-w-2xl items-start justify-center gap-2.5 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-left text-sm text-white/80 sm:items-center">
+              <svg
+                aria-hidden
+                viewBox="0 0 24 24"
+                className="mt-0.5 h-4 w-4 shrink-0 text-accent sm:mt-0"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <rect x="4" y="11" width="16" height="10" rx="2" />
+                <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+              </svg>
+              <span>
+                <strong className="font-semibold text-white">Private by design.</strong> Reps are
+                counted on your phone. No video is recorded or uploaded.
+              </span>
             </p>
+
+            <div className="mt-9 flex flex-col items-center gap-5 border-t border-white/10 pt-8">
+              <p className="text-center text-xl font-extrabold tracking-tight text-white sm:text-2xl">
+                Thank you for moving with us.
+              </p>
+              <motion.a
+                href={PUSHUP_CHALLENGE_URL}
+                whileHover={reduce ? undefined : { y: -3, scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                className="inline-flex items-center gap-2.5 rounded-full bg-accent px-7 py-3.5 text-base font-extrabold tracking-tight text-black shadow-[0_14px_40px_-12px_rgba(200,255,61,0.75)] outline-none ring-accent/40 focus-visible:ring-4"
+                aria-label="Join the First Push-ups challenge in the MONA app"
+                data-testid="story-cta"
+              >
+                <span className="sm:hidden">Join First Push-ups</span>
+                <span className="hidden sm:inline">Join the First Push-ups challenge</span>
+                <span aria-hidden>→</span>
+              </motion.a>
+            </div>
           </motion.article>
         </div>
       </div>
