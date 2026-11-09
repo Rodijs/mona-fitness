@@ -7,8 +7,8 @@
 
 import { SUPPORT_EMAIL } from "./contact";
 
-export const PRIVACY_VERSION = "1.17";
-export const PRIVACY_UPDATED = "30 October 2026";
+export const PRIVACY_VERSION = "1.18";
+export const PRIVACY_UPDATED = "9 November 2026";
 export const PRIVACY_CONTACT = SUPPORT_EMAIL;
 
 export type PolicyBlock =
@@ -18,9 +18,9 @@ export type PolicyBlock =
 export type PolicySection = { id: string; title: string; body: PolicyBlock[] };
 
 export const SUMMARY = [
-  "Your camera is only used to count reps, live on your phone. No video or photo is ever recorded, saved or uploaded.",
+  "Your camera is only used to count reps, live on your phone. No video or photo of your workout is ever recorded, saved or uploaded.",
   "Your run route stays on your phone. Only distance, time and pace go to your account.",
-  "Friends in a challenge see your name and your totals — never your email.",
+  "Friends in a challenge see your name and your totals, and can open your profile — never your email.",
   "No ads, no selling of data, no tracking across apps.",
   "You can delete your account and all your data yourself, any time, in Profile. A copy of your data is one email away.",
 ];
@@ -53,7 +53,7 @@ export const SECTIONS: PolicySection[] = [
       },
       {
         t: "p",
-        text: "If you sign in with Google or Apple, they confirm who you are and share your email and name (Google also shares a link to your profile photo, which the app can show as your picture). We never see your Google or Apple password.",
+        text: "If you sign in with Google or Apple, they confirm who you are and share your email and name (Google also shares a link to your profile photo, which the app can show as your picture — on your profile too, unless you pick your own photo in MONA or remove it). We never see your Google or Apple password.",
       },
     ],
   },
@@ -122,7 +122,7 @@ export const SECTIONS: PolicySection[] = [
       },
       {
         t: "p",
-        text: "The Paper: when a challenge ends — or, for MONA's open challenges, when each calendar month ends — the top 3 who actually took part (at least one rep or some distance) get The Paper, a diploma in Awards. It is saved in your account with the challenge name, your place, your counted total, workouts, active days, the dates and how many people took part, and you get a notification about it. Only you see your Papers; other members see the same leaderboard totals as before.",
+        text: "The Paper: when a challenge ends — or, for MONA's open challenges, when each calendar month ends — the top 3 who actually took part (at least one rep or some distance) get The Paper, a diploma in Awards. It is saved in your account with the challenge name, your place, your counted total, workouts, active days, the dates and how many people took part, and you get a notification about it. People who can see your profile see how many gold, silver and bronze Papers you have; other members see the same leaderboard totals as before.",
       },
       {
         t: "p",
@@ -142,7 +142,7 @@ export const SECTIONS: PolicySection[] = [
       },
       {
         t: "p",
-        text: "When you finish a breathing session in Mind, MONA saves which practice it was, how long it lasted and when, to your account — so your mindful streak and Mind awards follow you to other devices. How you said you felt before and after a session stays only on your phone and is never uploaded. Only you can see your sessions; they aren't shared with challenges.",
+        text: "When you finish a breathing session in Mind, MONA saves which practice it was, how long it lasted and when, to your account — so your mindful streak and Mind awards follow you to other devices. How you said you felt before and after a session stays only on your phone and is never uploaded. Your sessions aren't shared with challenges; people who can see your profile see your total breathing minutes and sessions, and your minutes on each of the last 7 days.",
       },
     ],
   },
@@ -152,8 +152,17 @@ export const SECTIONS: PolicySection[] = [
     body: [
       {
         t: "p",
-        text: 'Your profile photo, age, weight, height and gender are stored only on your phone and are never uploaded. Your weight is used on your phone to estimate calories burned on runs. Your name is the one profile field saved to your account (see "Your account").',
+        text: 'Your age, weight, height and gender are stored only on your phone and are never uploaded. Your weight is used on your phone to estimate calories burned on runs. Your name and, if you pick one, a small copy of your profile photo are saved to your account (see "Your account" and "Your profile and following").',
       },
+    ],
+  },
+    {
+    id: "following",
+    title: "Your profile and following",
+    body: [
+      { t: "p", text: "People who share a challenge with you, and people you follow or who follow you, can open your profile. It shows your first name, your profile photo, your day streak, your total workouts, reps, kilometres and active days, your breathing minutes and sessions (with the last 7 days), how many Papers you have, how many followers you have and how many people you follow, the challenges you're in that they're allowed to see (public ones, or ones they're in too), and since when you've been in MONA. People you've blocked, or who blocked you, can't open it." },
+      { t: "p", text: "Profile photo: if you pick a photo in MONA, a small copy (256 × 256 pixels, redrawn on your phone, so it carries no location or camera details) is saved to your account so these people can see it. If you remove it, they see your initials. If you never pick one and you signed in with Google, your Google profile picture is shown. If someone reports your photo, MONA may remove it. Your photo is deleted with your account." },
+      { t: "p", text: "Following: when you follow someone, MONA saves that you follow them, and they get a notification (\"… started following you\"). Who follows you and who you follow can be seen by the same people who can see your profile. Unfollowing or blocking removes the follow. Follows are deleted with your account." },
     ],
   },
   {
@@ -190,7 +199,7 @@ export const SECTIONS: PolicySection[] = [
     body: [
       {
         t: "p",
-        text: "Rod, who runs MONA, can see account and activity data in a private admin tool that only he can sign in to: your name, email, sign-in method, when you joined and last signed in, your challenges, your workout and run totals with their dates and times, how many moves the rep counter didn't count, your breathing sessions in Mind (practice, length and time), quotes you liked, your suggestions and feedback, reports you send or that are made about you, and the answer you give if you delete your account. He uses it to run and improve the app, help you when you ask, and stop abuse.",
+        text: "Rod, who runs MONA, can see account and activity data in a private admin tool that only he can sign in to: your name, email, sign-in method, when you joined and last signed in, your profile photo, your challenges, your workout and run totals with their dates and times, how many moves the rep counter didn't count, your breathing sessions in Mind (practice, length and time), quotes you liked, your suggestions and feedback, reports you send or that are made about you, and the answer you give if you delete your account. He uses it to run and improve the app, help you when you ask, and stop abuse.",
       },
       {
         t: "list",
@@ -300,7 +309,7 @@ export const SECTIONS: PolicySection[] = [
     body: [
       {
         t: "p",
-        text: "We keep your account data for as long as you have an account. You can delete your account yourself at any time in Profile → Delete account. It happens straight away: your account, workouts, runs, breathing sessions, health data, challenge memberships, uploaded challenge pictures and notifications about you are deleted, and you disappear from leaderboards. Copies in our providers' backups disappear soon after as those backups are replaced.",
+        text: "We keep your account data for as long as you have an account. You can delete your account yourself at any time in Profile → Delete account. It happens straight away: your account, workouts, runs, breathing sessions, health data, challenge memberships, uploaded challenge pictures, your profile photo, who you follow and who follows you, and notifications about you are deleted, and you disappear from leaderboards. Copies in our providers' backups disappear soon after as those backups are replaced.",
       },
       {
         t: "p",
