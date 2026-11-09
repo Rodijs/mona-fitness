@@ -90,7 +90,7 @@ export default function Story() {
                   </h3>
                 </div>
                 <p className="mt-5 text-white/75">
-                  I&apos;m a husband and a dad from Latvia. I train in my home gym and run whenever
+                  I&apos;m a husband and a dad. I train in my home gym and run whenever
                   I find the time. Life with a family is busy, but I still wanted to move every day
                   and feel stronger, so I went looking for a simpler way.
                 </p>
