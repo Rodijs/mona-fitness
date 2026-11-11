@@ -26,7 +26,7 @@ const FAQ: { q: string; a: string }[] = [
   },
   {
     q: "Is MONA free?",
-    a: "Yes. Challenges with friends, the rep counter, runs and Mind are all free.",
+    a: "Yes. Challenges with friends, the rep counter, runs and Breathe are all free.",
   },
 ];
 
