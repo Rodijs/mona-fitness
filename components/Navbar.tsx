@@ -24,7 +24,7 @@ const SMALL_LINKS = [
   { href: `mailto:${SUPPORT_EMAIL}`, label: SUPPORT_EMAIL, external: false },
   { href: "/support", label: "Support", external: false },
   { href: "/privacy", label: "Privacy", external: false },
-  { href: "https://instagram.com/monafitness", label: "Instagram", external: true },
+  { href: "https://www.instagram.com/mona.fitness.app/", label: "Instagram", external: true },
   { href: "https://x.com/razm1ro", label: "X", external: true },
 ] as const;
 

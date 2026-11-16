@@ -14,7 +14,7 @@ const SOCIALS = [
   },
   {
     label: "Instagram",
-    href: "https://instagram.com/monafitness",
+    href: "https://www.instagram.com/mona.fitness.app/",
     icon: (
       <svg
         viewBox="0 0 24 24"
