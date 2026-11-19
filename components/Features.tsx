@@ -75,7 +75,10 @@ export default function Features() {
   const reduce = !!useReducedMotion();
   const wide = useMedia("(min-width: 1280px)");
   const stage = useRef<HTMLDivElement>(null);
-  const shown = useInView(stage, { once: true, amount: 0.25 });
+  // starts once the top of the stage is a fifth of the way up the screen. Not
+  // a share of the stage: on phones the stage also holds all four cards, so
+  // "25% visible" came long after the phone itself was on screen.
+  const shown = useInView(stage, { once: true, margin: "0px 0px -20% 0px" });
   const phoneOn = useAfter(shown, reduce ? 0 : 700);
 
   const { scrollYProgress } = useScroll({ target: stage, offset: ["start end", "end start"] });
