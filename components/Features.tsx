@@ -152,7 +152,7 @@ export default function Features() {
         </div>
 
         {/* stage */}
-        <div ref={stage} className="relative mt-10 lg:mt-12">
+        <div ref={stage} className="relative mt-4 lg:mt-[18px]">
           {/* wide screens (1280+): cards on both sides of the phone */}
           <div className="hidden grid-cols-[minmax(0,1fr)_360px_minmax(0,1fr)] grid-rows-[auto_1fr] items-start gap-x-14 gap-y-6 xl:grid">
               {/* The four cards sit in two shared rows, so each row starts on

@@ -140,7 +140,7 @@ export function LeaderCard({ active }: { active: boolean }) {
           );
         })}
       </div>
-      <p className="mt-3 flex items-center gap-2 text-[12px] text-white/55">
+      <p className="mt-3 flex items-center gap-2 whitespace-nowrap text-[12px] text-white/55">
         <motion.span
           className="flex h-5 w-5 items-center justify-center rounded-full bg-[#C8FF8F] text-[#0d120c]"
           initial={false}
@@ -149,7 +149,7 @@ export function LeaderCard({ active }: { active: boolean }) {
         >
           <ArrowUp size={12} strokeWidth={3} />
         </motion.span>
-        Every rep moves you up the live leaderboard
+        Rep by rep, climb the leaderboard
       </p>
     </CardShell>
   );

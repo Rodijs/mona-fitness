@@ -280,7 +280,6 @@ export default function PhoneHome({ width, active }: { width: number; active: bo
                 transition={{ duration: 4, repeat: active ? Infinity : 0, ease: "easeInOut" }}
               />
               <span className={`${appDisplay.className} text-[24px] font-medium`}>Breathe</span>
-              <span className="absolute left-[62%] top-[14px] h-[6px] w-[6px] rounded-full bg-white/80" aria-hidden />
               <span className="ml-auto flex h-[38px] w-[38px] items-center justify-center rounded-full bg-white/10">
                 <ChevronRight size={18} />
               </span>
