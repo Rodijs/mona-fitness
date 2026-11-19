@@ -181,7 +181,7 @@ export function StreakCard({ active }: { active: boolean }) {
         className="mt-4 flex items-center gap-3 rounded-[18px] border border-[#e6cf86]/70 px-3 py-[10px] text-[#22261d]"
         style={{ background: "linear-gradient(140deg,#f6f1df 0%,#efe6c8 60%,#e6efc9 100%)" }}
         initial={false}
-        animate={{ y: paper ? 0 : 12, opacity: paper ? 1 : 0, rotate: paper ? -1.5 : 0 }}
+        animate={{ y: paper ? 0 : 12, opacity: paper ? 1 : 0 }}
         transition={{ duration: 0.7, ease: EASE_OUT }}
       >
         <svg width="34" height="34" viewBox="0 0 100 100" aria-hidden>

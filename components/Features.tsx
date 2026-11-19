@@ -83,7 +83,8 @@ export default function Features() {
   const phoneDrift = useTransform(scrollYProgress, [0, 1], still ? [0, 0] : [50, -50]);
   const driftA = useTransform(scrollYProgress, [0, 1], still ? [0, 0] : [90, -90]);
   const driftB = useTransform(scrollYProgress, [0, 1], still ? [0, 0] : [30, -30]);
-  const drifts = [driftA, driftB, driftB, driftA];
+  // [left top, left bottom, right top, right bottom]: each row drifts as one
+  const drifts = [driftA, driftB, driftA, driftB];
 
   const lines = ["What is", "Mona?"];
 
@@ -117,7 +118,7 @@ export default function Features() {
           >
             MONA · Movement Nation
           </motion.p>
-          <h2 id="features" className="mt-4 scroll-mt-28 text-4xl font-extrabold tracking-tight text-white sm:scroll-mt-32 sm:text-5xl">
+          <h2 id="features" className="mt-4 scroll-mt-40 text-4xl font-extrabold tracking-tight text-white sm:scroll-mt-48 sm:text-5xl">
             {lines.map((line, i) => (
               <motion.span
                 key={line}
@@ -151,20 +152,27 @@ export default function Features() {
         </div>
 
         {/* stage */}
-        <div ref={stage} className="relative mt-16 lg:mt-20">
+        <div ref={stage} className="relative mt-10 lg:mt-12">
           {/* wide screens (1280+): cards on both sides of the phone */}
-          <div className="hidden grid-cols-[minmax(0,1fr)_360px_minmax(0,1fr)] items-start gap-14 xl:grid">
-              <div className="flex flex-col items-end gap-6 pt-10">
-                {CARDS.filter((c) => c.side === "left").map((c, i) => (
-                  <div key={i} className="w-full max-w-[330px]">
-                    <Arrive shown={shown} side="left" order={i * 2} drift={drifts[i]} reduce={reduce}>
+          <div className="hidden grid-cols-[minmax(0,1fr)_360px_minmax(0,1fr)] grid-rows-[auto_1fr] items-start gap-x-14 gap-y-6 xl:grid">
+              {/* The four cards sit in two shared rows, so each row starts on
+                  the same line on both sides; the phone spans both rows. */}
+              {CARDS.map((c, i) => {
+                const left = c.side === "left";
+                const row = left ? i : i - 2;
+                return (
+                  <div
+                    key={i}
+                    className={`w-full max-w-[330px] ${left ? "col-start-1 justify-self-end" : "col-start-3 justify-self-start"} ${row === 0 ? "row-start-1 mt-8" : "row-start-2"}`}
+                  >
+                    <Arrive shown={shown} side={c.side} order={left ? row * 2 : row * 2 + 1} drift={drifts[i]} reduce={reduce}>
                       {c.render}
                     </Arrive>
                   </div>
-                ))}
-              </div>
+                );
+              })}
 
-              <motion.div style={{ y: phoneDrift }} className="relative">
+              <motion.div style={{ y: phoneDrift }} className="relative col-start-2 row-span-2 row-start-1">
                 <motion.div
                   initial={{ opacity: 0, y: 110, scale: 0.92 }}
                   animate={shown || reduce ? { opacity: 1, y: 0, scale: 1 } : undefined}
@@ -176,16 +184,6 @@ export default function Features() {
                   <PeopleChip />
                 </Chip>
               </motion.div>
-
-              <div className="flex flex-col items-start gap-6 pt-28">
-                {CARDS.filter((c) => c.side === "right").map((c, i) => (
-                  <div key={i} className="w-full max-w-[330px]">
-                    <Arrive shown={shown} side="right" order={i * 2 + 1} drift={drifts[i + 2]} reduce={reduce}>
-                      {c.render}
-                    </Arrive>
-                  </div>
-                ))}
-              </div>
           </div>
 
           {/* phones and tablets: the phone, then the cards in a grid */}
