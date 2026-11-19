@@ -277,11 +277,7 @@ export function PeopleChip() {
           </span>
         ))}
       </span>
-      <span className="text-[12px] font-medium leading-tight">
-        5 people in
-        <br />
-        this challenge
-      </span>
+      <span className="whitespace-nowrap text-[12px] font-medium leading-tight">5 people in this challenge</span>
     </div>
   );
 }
