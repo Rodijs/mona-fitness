@@ -142,10 +142,11 @@ export default function Features() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.7, delay: 0.3, ease: EASE_OUT }}
-            className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-white/70 sm:text-lg"
+            className="mx-auto mt-5 max-w-3xl text-base leading-relaxed text-white/70 sm:text-lg"
           >
-            A fitness app that makes moving every day simple, social and hard to skip. Your phone counts the reps.
-            Your friends keep you going.
+            {/* the first sentence stays on one line from tablets up */}
+            <span className="md:whitespace-nowrap">A fitness app that makes moving every day simple, social and hard to skip.</span>
+            <br className="hidden md:block" /> Your phone counts the reps. Your friends keep you going.
           </motion.p>
         </div>
 
@@ -216,9 +217,10 @@ export default function Features() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.7, ease: EASE_OUT }}
-          className="mt-14 text-center text-base font-semibold tracking-tight text-accent sm:text-lg"
+          className="mt-14 text-balance text-center font-serif text-xl font-medium italic tracking-tight sm:text-2xl"
         >
-          Move every day. Move better. Move together.
+          {/* same lettering as "Thank you for moving with us." in Our Story */}
+          <span className="text-gradient">Move every day. Move better. Move together.</span>
         </motion.p>
       </div>
     </section>

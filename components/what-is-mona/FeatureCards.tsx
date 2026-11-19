@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useId } from "react";
+import { useId, useRef } from "react";
 import { appDisplay, appSans } from "@/app/fonts/app-fonts";
 import { EASE_OUT, EASE_TRAVEL, fmt, useAfter, useCountUp } from "./motion";
 import { ArrowUp, Check, Flame, Heart, Route, Scan, ShieldCheck, Users } from "./icons";
@@ -13,16 +13,38 @@ import { ArrowUp, Check, Flame, Heart, Route, Scan, ShieldCheck, Users } from ".
 
 const LIME = "#C8FF8F";
 
+// Same card as the widgets in Our Stats: a thin white stroke that turns
+// lime on hover, a lime light that follows the pointer, and a small lift.
 function CardShell({ icon, label, title, children }: { icon: React.ReactNode; label: string; title: string; children: React.ReactNode }) {
+  const ref = useRef<HTMLElement>(null);
   return (
-    <article className="w-full rounded-[28px] border border-white/10 bg-[#0c100b]/75 p-5 shadow-[0_30px_60px_-24px_rgba(0,0,0,0.8)] backdrop-blur-xl">
-      <p className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-accent">
-        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-accent/15">{icon}</span>
-        {label}
-      </p>
-      <h3 className="mt-3 text-[17px] font-semibold leading-snug text-white">{title}</h3>
-      <div className={`${appSans.className} mt-4`}>{children}</div>
-    </article>
+    <motion.article
+      ref={ref}
+      onPointerMove={(e) => {
+        const el = ref.current;
+        if (!el) return;
+        const r = el.getBoundingClientRect();
+        el.style.setProperty("--mx", `${e.clientX - r.left}px`);
+        el.style.setProperty("--my", `${e.clientY - r.top}px`);
+      }}
+      whileHover={{ y: -4 }}
+      transition={{ type: "spring", stiffness: 300, damping: 24 }}
+      className="group relative w-full overflow-hidden rounded-2xl border border-white/15 bg-black/40 p-5 shadow-[0_30px_60px_-24px_rgba(0,0,0,0.8)] backdrop-blur-md transition-colors hover:border-accent/40"
+    >
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        style={{ background: "radial-gradient(320px circle at var(--mx, 50%) var(--my, 50%), rgba(200,255,61,0.10), transparent 70%)" }}
+      />
+      <div className="relative">
+        <p className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-accent">
+          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-accent/15">{icon}</span>
+          {label}
+        </p>
+        <h3 className="mt-3 text-[17px] font-semibold leading-snug text-white">{title}</h3>
+        <div className={`${appSans.className} mt-4`}>{children}</div>
+      </div>
+    </motion.article>
   );
 }
 

@@ -1,15 +1,14 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useId } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import { appDisplay, appSans } from "@/app/fonts/app-fonts";
 import { EASE_OUT, fmt, useAfter, useCountUp } from "./motion";
-import { Activity, Bell, ChevronRight, Footprints, Heart, Lock, Pencil, Plus, PushUp, Settings } from "./icons";
+import { Activity, Bell, ChevronRight, Footprints, Pencil, Plus, PushUp } from "./icons";
 
 // MONA's Home screen, drawn at true iPhone points (393 wide) and scaled to
 // the phone's width. Values follow the App Store screenshots (test user
 // Emma): a 12-day move streak, 9,840 of 15,000 steps, today's activity at
-// 100 of 150, Breathe, and the "100 Push-ups a Day" challenge.
+// 100 of 150, Breathe, and the "100 Daily Push-ups" challenge.
 //
 // When `active` turns on, the screen settles in: the streak's last day
 // lights and its number rolls 11 → 12, the step count and both bars fill,
@@ -32,9 +31,51 @@ function Bar({ pct, active, delay = 0, track = "rgba(13,18,12,0.08)" }: { pct: n
   );
 }
 
+// The streak flame, drawn like the one in Our Stats (same shape and fire
+// colours): it pops in, then breathes, with a soft glow and a few embers.
+const FLAME_PATH =
+  "M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4";
+const FIRE = "#FF7A2F";
+const FIRE_HOT = "#FFB347";
+
+function PhoneFlame({ on }: { on: boolean }) {
+  const reduce = useReducedMotion();
+  const play = on && !reduce;
+  return (
+    <div className="relative -mr-[4px] -mt-[4px] flex h-[44px] w-[44px] shrink-0 items-center justify-center" aria-hidden>
+      <motion.div
+        className="absolute inset-[2px] rounded-full blur-lg"
+        style={{ background: "radial-gradient(circle, rgba(255,122,47,0.55), transparent 70%)" }}
+        initial={{ opacity: 0.5 }}
+        animate={play ? { opacity: [0.5, 0.95, 0.5], scale: [0.9, 1.1, 0.9] } : { opacity: 0.5 }}
+        transition={{ duration: 2.4, repeat: play ? Infinity : 0, ease: "easeInOut" }}
+      />
+      {play &&
+        [22, 50, 74].map((x, i) => (
+          <motion.span
+            key={x}
+            className="absolute bottom-[45%] h-[4px] w-[4px] rounded-full"
+            style={{ left: `${x}%`, background: i % 2 ? FIRE_HOT : FIRE }}
+            initial={{ opacity: 0, y: 0 }}
+            animate={{ opacity: [0, 0.95, 0], y: -26 - i * 4, x: (i % 2 ? 1 : -1) * (2 + i) }}
+            transition={{ duration: 2.4 + i * 0.3, delay: 0.8 + i * 0.45, repeat: Infinity, repeatDelay: 1, ease: "easeOut" }}
+          />
+        ))}
+      <motion.svg
+        viewBox="0 0 24 24"
+        className="relative h-[32px] w-[32px] overflow-visible"
+        animate={play ? { scale: [1, 1.1, 1], rotate: [0, -3, 2, 0] } : undefined}
+        transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        style={{ filter: `drop-shadow(0 0 8px ${FIRE}) drop-shadow(0 0 16px rgba(255,122,47,0.5))` }}
+      >
+        <path d={FLAME_PATH} fill={FIRE} stroke={FIRE_HOT} strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+      </motion.svg>
+    </div>
+  );
+}
+
 function StreakCard({ active }: { active: boolean }) {
   const day7 = useAfter(active, 900);
-  const flame = `flame-${useId().replace(/:/g, "")}`;
   return (
     <div
       className="relative flex aspect-square w-[42%] shrink-0 flex-col justify-between overflow-hidden rounded-[28px] p-[14px] text-white"
@@ -55,23 +96,7 @@ function StreakCard({ active }: { active: boolean }) {
             <span className="block h-[54px]">12</span>
           </motion.span>
         </span>
-        <motion.span
-          className="-mr-1 -mt-1 block"
-          animate={day7 ? { scale: [1, 1.18, 1] } : { scale: 1 }}
-          transition={{ duration: 0.6, ease: EASE_OUT }}
-        >
-          <svg width="34" height="40" viewBox="0 0 34 40" aria-hidden>
-            <defs>
-              <radialGradient id={flame} cx="0.5" cy="0.78" r="0.75">
-                <stop offset="0" stopColor="#fff8d9" />
-                <stop offset="0.38" stopColor="#ffd25a" />
-                <stop offset="0.8" stopColor="#c6ef6a" />
-                <stop offset="1" stopColor="#8bd04a" />
-              </radialGradient>
-            </defs>
-            <path fill={`url(#${flame})`} d="M18 3c1 7 11 12 11 23 0 8-5.5 12-12 12S5 34 5 27c0-6 4-9.5 6-14 1 4 3 6 5 6.5C15 13.5 16 8 18 3z" />
-          </svg>
-        </motion.span>
+        <PhoneFlame on={active} />
       </div>
       <div>
         <p className="text-[13px] font-medium leading-tight">days</p>
@@ -122,7 +147,7 @@ function ChallengeCard({ title, progress, active, delay }: { title: string; prog
   const r = 27;
   const c = 2 * Math.PI * r;
   return (
-    <div className="flex items-center gap-[16px] rounded-[30px] bg-[#0d120c] py-[16px] pl-[18px] pr-[14px] text-white">
+    <div className="flex items-center gap-[16px] rounded-[30px] bg-[#0d120c] py-[16px] pl-[18px] pr-[20px] text-white">
       <div className="relative h-[66px] w-[66px] shrink-0">
         <svg width="66" height="66" viewBox="0 0 66 66" className="-rotate-90" aria-hidden>
           <circle cx="33" cy="33" r={r} fill="#1a2119" stroke="rgba(255,255,255,0.1)" strokeWidth="4" />
@@ -144,15 +169,8 @@ function ChallengeCard({ title, progress, active, delay }: { title: string; prog
       </div>
       <div className="min-w-0 flex-1">
         <p className="text-[11px] uppercase tracking-[0.14em] text-white/55">Daily · Made by me</p>
-        <p className="mt-[2px] truncate text-[19px] font-medium leading-tight">{title}</p>
+        <p className="mt-[2px] truncate text-[20px] font-medium leading-tight">{title}</p>
         <p className="mt-[2px] text-[13px] text-white/55">17 days left</p>
-      </div>
-      <div className="flex shrink-0 flex-col gap-[6px]">
-        {[Heart, Lock, Settings].map((I, i) => (
-          <span key={i} className="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-white/10 text-white/80">
-            <I size={15} />
-          </span>
-        ))}
       </div>
     </div>
   );
@@ -167,17 +185,18 @@ export default function PhoneHome({ width, active }: { width: number; active: bo
 
   return (
     <div
-      className="relative"
+      className="relative overflow-hidden"
       style={{
+        // the last few pixels also fade out, so no edge shows where it ends
+        maskImage: "linear-gradient(to bottom, #000 88%, transparent 100%)",
+        WebkitMaskImage: "linear-gradient(to bottom, #000 88%, transparent 100%)",
         width,
         // the phone runs off the bottom: only the top of it is drawn, and
         // its lower edge dissolves into the section
         height: Math.round((screenH * 0.86) * s + bezel),
-        maskImage: "linear-gradient(to bottom, #000 72%, transparent 100%)",
-        WebkitMaskImage: "linear-gradient(to bottom, #000 72%, transparent 100%)",
       }}
       role="img"
-      aria-label="MONA's Home screen: a 12-day move streak, 9,840 daily steps, today's activity, Breathe and the 100 Push-ups a Day challenge"
+      aria-label="MONA's Home screen: a 12-day move streak, 9,840 daily steps, today's activity, Breathe and the 100 Daily Push-ups challenge"
     >
       {/* bezel */}
       <div
@@ -272,12 +291,18 @@ export default function PhoneHome({ width, active }: { width: number; active: bo
               <p className={`${appDisplay.className} text-[22px] font-medium`}>Today&rsquo;s Challenges</p>
               <Plus size={24} className="text-[#0d120c]/50" />
             </div>
-            <p className="-mt-[6px] text-[13px] text-[#0d120c]/50">Tip: press and hold a card to move it up or down.</p>
-            <ChallengeCard title="100 Push-ups a Day" progress={0.62} active={active} delay={0.45} />
+            <ChallengeCard title="100 Daily Push-ups" progress={0.62} active={active} delay={0.45} />
             <ChallengeCard title="Squat Builder" progress={0.4} active={active} delay={0.55} />
           </div>
         </div>
       </div>
+      {/* the phone runs on below the section: its lower part sinks into a
+          dark gradient instead of stopping at a hard edge */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-[-2px] bottom-0 h-[38%]"
+        style={{ background: "linear-gradient(to bottom, rgba(8,9,10,0) 0%, rgba(8,9,10,0.6) 40%, rgba(8,9,10,0.95) 75%, #08090a 100%)" }}
+      />
     </div>
   );
 }
