@@ -3,15 +3,15 @@
 // and stays centered on narrow screens.
 
 const BADGE_ITEM =
-  "opacity-60 grayscale transition-[opacity,filter] duration-200 hover:opacity-100 hover:grayscale-0 focus-within:opacity-100 focus-within:grayscale-0";
+  "opacity-60 grayscale transition-[opacity,filter] duration-200 hover:opacity-100 hover:grayscale-0 focus-within:opacity-100 focus-within:grayscale-0 [&_img]:h-7 [&_img]:w-auto";
 
 export default function FeaturedOn() {
   return (
-    <section aria-labelledby="featured-on" className="px-5 pb-10 pt-4 sm:px-8">
-      <div className="mx-auto flex max-w-6xl flex-col items-center gap-4">
+    <section aria-labelledby="featured-on" className="px-5 pb-8 pt-2 sm:px-8">
+      <div className="mx-auto flex max-w-6xl flex-col items-center gap-3">
         <h2
           id="featured-on"
-          className="text-xs font-semibold uppercase tracking-[0.2em] text-muted"
+          className="text-[10px] font-semibold uppercase tracking-[0.2em] text-muted"
         >
           Featured on
         </h2>
