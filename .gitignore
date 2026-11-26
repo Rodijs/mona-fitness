@@ -45,3 +45,7 @@ next-env.d.ts
 
 # Claude Code harness-internal state, not project files
 /.claude/
+
+# Partners pitch source: plain text stays off GitHub (public repo).
+# Only the encrypted copy in lib/partners/pitch.enc.ts is committed.
+/partners-src/
