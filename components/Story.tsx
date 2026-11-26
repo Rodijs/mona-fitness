@@ -41,13 +41,22 @@ export default function Story() {
           viewport={{ once: true }}
           transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
         >
+          {/* Horizontal motion blur: a Gaussian blur on the x axis only.
+              edgeMode="duplicate" stops the edges fading to transparent. */}
+          <svg className="absolute h-0 w-0" aria-hidden focusable="false">
+            <filter id="story-motion-blur" x="0" y="0" width="100%" height="100%">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="16 0" edgeMode="duplicate" />
+            </filter>
+          </svg>
           <Image
             src="/story/studio-floor.jpg"
             alt=""
             fill
             sizes="100vw"
-            className="object-cover object-[88%_100%] lg:object-[85%_100%]"
+            className="object-cover object-[88%_100%] [filter:url(#story-motion-blur)] lg:object-[85%_100%]"
           />
+          {/* Darken the photo toward the site's background colour. */}
+          <div className="absolute inset-0 bg-background/60" />
           <div className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-[#111b22] to-transparent lg:hidden" />
         </motion.div>
 
