@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0b110a">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<meta property="og:title" content="MONA · Investor &amp; Partner preview">
+<meta property="og:description" content="A private preview of MONA, the app that turns everyday movement into a habit. Access by invitation.">
+<meta property="og:image" content="https://mona.fitness/opengraph-image.png">
+<meta property="og:url" content="https://mona.fitness/partners">
+<meta name="twitter:card" content="summary_large_image">
+<title>MONA · Partners</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Same look as the MONA admin sign-in: the hero photo, faint, fading into
+   the dark; the logo above the card; a card with the lime light running
+   around its edge and a soft shine passing over it. */
+@font-face{font-family:"Stack Sans Text";font-weight:600;font-display:swap;src:url(/partners/stack-sans-text-600.woff2) format("woff2")}
+:root{color-scheme:dark;--lime:#c8ff8f;--ink:#0b110a;--sans:"Manrope",ui-sans-serif,system-ui,sans-serif;--disp:"Stack Sans Text","Manrope",sans-serif;--ease:cubic-bezier(.22,1,.36,1)}
+*{box-sizing:border-box;min-width:0}
+html,body{min-height:100%}
+body{margin:0;background:var(--ink);color:#fff;font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+::selection{background:var(--lime);color:var(--ink)}
+:focus-visible{outline:2px solid var(--lime);outline-offset:3px}
+.bd{position:fixed;inset:0;overflow:hidden;pointer-events:none}
+.bd .ph{position:absolute;inset:0;background:url(/partners/hero-trail.webp) 62% 30%/cover;opacity:0;transform:scale(1.08);animation:phIn 1.6s var(--ease) forwards}
+@media (min-width:1000px){.bd .ph{background-image:url(/partners/hero-trail-wide.webp);background-position:right 30%}}
+@keyframes phIn{to{opacity:.3;transform:none}}
+.bd::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,17,10,.35) 0%,rgba(11,17,10,.7) 45%,#0b110a 80%),radial-gradient(70% 50% at 50% 0%,rgba(200,255,143,.12),transparent)}
+main{position:relative;min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:40px 16px}
+.shell{width:100%;max-width:420px;animation:shellIn .7s var(--ease) both}
+@keyframes shellIn{from{opacity:0;transform:translateY(24px) scale(.97);filter:blur(8px)}}
+.top{display:flex;flex-direction:column;align-items:center;gap:16px;margin-bottom:36px}
+.top .logo{display:block;height:56px;width:224px;filter:drop-shadow(0 6px 24px rgba(0,0,0,.5))}
+@media (max-width:480px){.top .logo{height:44px;width:176px}}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:99px;border:1px solid rgba(200,255,143,.3);background:rgba(11,17,10,.6);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:var(--lime);font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+.stroke{position:relative;isolation:isolate;overflow:hidden;border-radius:30px;padding:2px;background:rgba(200,255,143,.2);box-shadow:0 30px 80px -28px rgba(0,0,0,.9),0 24px 80px -30px rgba(143,227,79,.45)}
+.stroke .spin{position:absolute;left:50%;top:50%;width:900px;height:900px;margin:-450px 0 0 -450px;background:conic-gradient(from 0deg,transparent 0deg,transparent 220deg,rgba(200,255,143,.25) 280deg,#c8ff8f 335deg,#fff 350deg,transparent 360deg);animation:spin 10s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.card{position:relative;overflow:hidden;border-radius:28px;background:linear-gradient(160deg,#16210f 0%,#0e150d 45%,#0b110a 100%);padding:28px 26px 24px;text-align:center}
+.card .blob{position:absolute;left:-64px;top:-80px;width:224px;height:224px;border-radius:50%;background:rgba(143,227,79,.15);filter:blur(48px);pointer-events:none}
+.card .shine{position:absolute;top:0;bottom:0;width:50%;transform:translateX(-160%) skewX(-12deg);background:linear-gradient(90deg,transparent,rgba(255,255,255,.07),transparent);animation:shine 8.4s ease-in-out .9s infinite;pointer-events:none}
+@keyframes shine{0%{transform:translateX(-160%) skewX(-12deg)}17%,100%{transform:translateX(320%) skewX(-12deg)}}
+.card>*{position:relative}
+h1{margin:0;font-family:var(--disp);font-weight:600;font-size:24px;letter-spacing:-.02em;line-height:1.2}
+.sub{margin:6px 0 22px;font-size:14px;color:rgba(255,255,255,.55)}
+.field{position:relative}
+.field .ic{position:absolute;left:14px;top:50%;width:16px;height:16px;margin-top:-8px;color:rgba(255,255,255,.35);pointer-events:none}
+.field input{width:100%;height:50px;border-radius:999px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:#fff;font:600 16px var(--sans);letter-spacing:.08em;text-align:center;padding:0 46px;transition:border-color .2s,box-shadow .2s}
+.field input::placeholder{color:rgba(255,255,255,.35);letter-spacing:.02em;font-weight:500}
+.field input:focus{outline:none;border-color:rgba(200,255,143,.6);box-shadow:0 0 0 3px rgba(200,255,143,.15)}
+.field .show{position:absolute;right:6px;top:50%;width:40px;height:40px;margin-top:-20px;display:grid;place-items:center;border:0;border-radius:50%;background:transparent;color:rgba(255,255,255,.45);cursor:pointer}
+.field .show:hover{color:#fff}
+.btn{margin-top:12px;width:100%;height:50px;display:flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:999px;background:var(--lime);color:var(--ink);font:700 15px var(--sans);cursor:pointer;box-shadow:0 10px 30px -10px rgba(200,255,143,.7);transition:background .2s}
+.btn:hover{background:#d6ffaa}
+.btn svg{transition:transform .25s var(--ease)}
+.btn:hover svg{transform:translateX(3px)}
+.err{min-height:20px;margin-top:10px;font-size:13px;color:#fda4af}
+.shake{animation:shake .45s}
+@keyframes shake{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+.fine{margin:6px 0 0;display:flex;align-items:center;justify-content:center;gap:6px;font-size:11.5px;color:rgba(255,255,255,.4)}
+.below{margin-top:18px;text-align:center;font-size:12.5px;color:rgba(255,255,255,.45)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01ms!important}.bd .ph{opacity:.3;transform:none}}
+</style>
+</head>
+<body>
+<div class="bd" aria-hidden="true"><div class="ph"></div></div>
+<main>
+ <div class="shell">
+  <div class="top">
+   <svg class="logo" viewBox="0 0 400 100" role="img" aria-label="MONA Fitness"><!--LOGO--></svg>
+   <span class="pill"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></svg>Partners</span>
+  </div>
+  <div class="stroke">
+   <div class="spin" aria-hidden="true"></div>
+   <form class="card{{SHAKE}}" method="post" action="/partners">
+    <div class="blob" aria-hidden="true"></div><div class="shine" aria-hidden="true"></div>
+    <h1>Investor &amp; Partner preview</h1>
+    <p class="sub">Enter the access code you received from Rod.</p>
+    <input type="hidden" name="action" value="signin">
+    <div class="field">
+     <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+     <input id="code" name="code" type="password" placeholder="Access code" aria-label="Access code" autocomplete="current-password" autocapitalize="characters" spellcheck="false" required autofocus{{INVALID}}>
+     <button type="button" class="show" id="showBtn" aria-controls="code" aria-label="Show code"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.06 12.35a1 1 0 0 1 0-.7 10.75 10.75 0 0 1 19.88 0 1 1 0 0 1 0 .7 10.75 10.75 0 0 1-19.88 0"/><circle cx="12" cy="12" r="3"/></svg></button>
+    </div>
+    <button class="btn" type="submit">Enter<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+    <div class="err" id="err" role="alert">{{ERROR}}</div>
+    <p class="fine"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Private preview · shared by invitation only</p>
+   </form>
+  </div>
+  <p class="below">Don't have a code? Write to hello@mona.fitness</p>
+ </div>
+</main>
+<script>
+{const b=document.getElementById("showBtn"),c=document.getElementById("code");
+b.addEventListener("click",()=>{const s=c.type==="password";c.type=s?"text":"password";b.setAttribute("aria-label",s?"Hide code":"Show code");b.style.color=s?"#c8ff8f":"";c.focus()});}
+</script>
+</body>
+</html>
