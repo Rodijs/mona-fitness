@@ -31,30 +31,57 @@ const SOCIALS = [
   },
 ];
 
+// The "·" between footer links, drawn as a small dot in MONA's lime gradient.
+function Dot({ wideOnly = false }: { wideOnly?: boolean }) {
+  return (
+    <span
+      aria-hidden
+      className={`${wideOnly ? "hidden sm:inline-block" : "inline-block"} h-[5px] w-[5px] shrink-0 rounded-full bg-[linear-gradient(135deg,var(--accent),#eaffb8)] shadow-[0_0_8px_rgba(200,255,61,0.55)]`}
+    />
+  );
+}
+
 export default function Footer() {
   return (
     <footer className="border-t border-border px-5 py-8 sm:px-8">
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-5 text-sm text-muted sm:flex-row">
         <Logo className="h-10 w-auto" />
 
-        <div className="flex flex-col items-center gap-2 text-center">
-          <nav aria-label="Footer" className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
+        <div className="flex flex-col items-center gap-1.5 text-center">
+          <nav aria-label="Footer" className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
             <Link href="/support" className="transition-colors hover:text-accent">
               Support
             </Link>
+            <Dot />
             <Link href={PRIVACY_URL} className="transition-colors hover:text-accent">
-              Privacy
+              Privacy Policy
             </Link>
-            <a href={`mailto:${SUPPORT_EMAIL}`} className="transition-colors hover:text-accent">
+            <Dot />
+            {/* A plain link on purpose: /partners is a route handler page, not a Next.js page.
+                It opens in a new tab because it is a separate page with no site menu. */}
+            <a
+              href="/partners"
+              target="_blank"
+              rel="noopener"
+              className="transition-colors hover:text-accent"
+            >
+              Partners<span className="sr-only"> (opens in a new tab)</span>
+            </a>
+            {/* On phones the email drops to its own line, so this dot is hidden there. */}
+            <Dot wideOnly />
+            <a
+              href={`mailto:${SUPPORT_EMAIL}`}
+              className="basis-full transition-colors hover:text-accent sm:basis-auto"
+            >
               {SUPPORT_EMAIL}
             </a>
           </nav>
+          <p>&copy; {new Date().getFullYear()} MONA Fitness. All rights reserved.</p>
           <p>
-            &copy; {new Date().getFullYear()} Mona Fitness. All rights reserved.
-            <span className="mx-2 hidden text-white/20 lg:inline" aria-hidden>
-              ·
+            Made with care in{" "}
+            <span role="img" aria-label="Latvia">
+              🇱🇻
             </span>
-            <span className="block lg:inline">Made with care in Latvia 🇱🇻</span>
           </p>
         </div>
 
