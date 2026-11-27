@@ -57,9 +57,15 @@ export default function Footer() {
               Privacy Policy
             </Link>
             <Dot />
-            {/* A plain link on purpose: /partners is a route handler page, not a Next.js page. */}
-            <a href="/partners" className="transition-colors hover:text-accent">
-              Partners
+            {/* A plain link on purpose: /partners is a route handler page, not a Next.js page.
+                It opens in a new tab because it is a separate page with no site menu. */}
+            <a
+              href="/partners"
+              target="_blank"
+              rel="noopener"
+              className="transition-colors hover:text-accent"
+            >
+              Partners<span className="sr-only"> (opens in a new tab)</span>
             </a>
             {/* On phones the email drops to its own line, so this dot is hidden there. */}
             <Dot wideOnly />
